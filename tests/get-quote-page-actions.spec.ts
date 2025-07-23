@@ -1,16 +1,16 @@
-import { test as base, expect, chromium } from '@playwright/test';
+import { test as base, expect, chromium, Page } from '@playwright/test';
 import { GetQuotePage } from '../pages/getQuote';
 
 const BASE_URL = 'https://trainingx.unqork.io/#/display/67545b82c5a4314c973256aa';
 
-const test = base.extend<{ page: any }>({
+const test = base.extend<{ page: Page }>({
   page: async ({}, use) => {
     const browser = await chromium.launch({ headless: false });
     const context = await browser.newContext();
     const page = await context.newPage();
     await use(page);
     await browser.close();
-  },
+  }
 });
 
 test.describe('Get Quote Page Actions', () => {
@@ -51,10 +51,10 @@ test.describe('Get Quote Page Actions', () => {
       console.log('Selected Travel Type: Individual');
 
       // Increase and decrease No of Adults (skip scrollIntoViewIfNeeded for now)
-     /* await getQuotePage.increaseAdults(2); // Increase by 2
+      await getQuotePage.increaseAdults(2); // Increase by 2
       console.log('Increased Adults by 2');
       await getQuotePage.decreaseAdults(1); // Decrease by 1 (should not go below 1)
-      console.log('Decreased Adults by 1');*/
+      console.log('Decreased Adults by 1');
 
       // Increase and decrease No of Children only if Family travel type is selected
       // (Children controls are always present in POM, but only visible for Family)
