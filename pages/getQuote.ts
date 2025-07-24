@@ -109,9 +109,9 @@ export class GetQuotePage {
   }
   // 2. Decrease No of Children (cannot go below 1, only if Family travel type is selected)
   async decreaseChildren(count: number) {
-   if (!this.childrenMinusButton || !this.childrenCountInput) return;
+   if (!this.childrenMinusButton) return;
     for (let i = 0; i < count; i++) {
-      const value = await this.childrenCountInput.textContent();
+      const value = await this.childrenCountInput.innerHTML();
       if (parseInt(value) > 1) {
         await this.childrenMinusButton.click();
       } else {
