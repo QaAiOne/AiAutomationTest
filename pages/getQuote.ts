@@ -1,6 +1,10 @@
 import { Page, Locator } from '@playwright/test';
 
 export class GetQuotePage {
+  // For Individual travel type
+  readonly individualsMinusButton: Locator;
+  readonly individualsPlusButton: Locator;
+  readonly individualsCountInput: Locator;
   readonly page: Page;
   // Progress indicator/stepper elements (not interactable)
   readonly progressIndicator: Locator;
@@ -48,19 +52,24 @@ export class GetQuotePage {
     this.travelTypeFamilyRadio = page.locator('//input[@type="radio" and @id="travelType-FAM"]');
     this.startDateInput = page.locator('//input[@id="dailyStartDate"]');
     this.endDateInput = page.locator('//input[@id="dailyEndDate"]');
-    this.areaDropdown = page.locator('//select[@id="visiting"]');
+    this.areaDropdown = page.locator('#visiting');
     this.getQuoteButton = page.locator('//button[contains(., "Get Quote")]');
     this.nextButton = page.locator('//button[contains(., "Next")]');
 
     this.adultsMinusButton = page.locator('//label[contains(text(), "No of Adults")]/following-sibling::div//button[contains(@class, "stepper-view-subtract")]');
-    this.adultsPlusButton = page.locator('//label[contains(text(), "No of Adults")]/following-sibling::div//button[contains(@class, "stepper-view-add")]');
+    this.adultsPlusButton = page.locator('//label[contains(text(), "No of Adults")]/following-sibling::div//button[contains(@class, "stepper-view-add")]'); 
     this.adultsCountInput = page.locator('//label[contains(text(), "No of Adults")]/following-sibling::div//div');
     // Children controls (always defined, but only visible for Family travel type)
     this.childrenMinusButton = page.locator('//label[contains(text(), "No of Children")]/following-sibling::div//button[contains(@class, "stepper-view-subtract")]');
     this.childrenPlusButton = page.locator('//label[contains(text(), "No of Children")]/following-sibling::div//button[contains(@class, "stepper-view-add")]');
     this.childrenCountInput = page.locator('//label[contains(text(), "No of Children")]/following-sibling::div/div');
-    this.areaDropdown = page.locator('//label[contains(text(), "Area")]/following-sibling::div//select | //label[contains(text(), "Area")]/following-sibling::div//div[contains(@class, "select")]');
-    this.startDateInput = page.locator('//input[@name="startDate" or @placeholder="Start Date"]');
+
+    // Individuals controls (only visible for Individual travel type)
+    this.individualsMinusButton = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//button[contains(@class, "stepper-view-subtract")]');
+    this.individualsPlusButton = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//button[contains(@class, "stepper-view-add")]');
+    this.individualsCountInput = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//div');
+    // Removed duplicate/conflicting areaDropdown assignment
+    this.startDateInput = page.locator('//input[@id="dailyStartDate"]');
     this.endDateInput = page.locator('//input[@name="endDate" or @placeholder="End Date"]');
     this.getQuoteButton = page.locator('//button[contains(text(), "Get Quote")]');
   }
@@ -83,16 +92,17 @@ export class GetQuotePage {
     }
   }
 
-  // 2. Increase No of Adults
+  // 2. Increase No of Adults (Family)
   async increaseAdults(count: number) {
     for (let i = 0; i < count; i++) {
       await this.adultsPlusButton.click();
+       console.log('Clicked Increase Adults button'+i+1);
     }
   }
-  // 2. Decrease No of Adults (cannot go below 1)
+  // 2. Decrease No of Adults (Family, cannot go below 1)
   async decreaseAdults(count: number) {
     for (let i = 0; i < count; i++) {
-      const value = await this.adultsCountInput.inputValue();
+      const value = await this.adultsCountInput.innerText();
       if (parseInt(value) > 1) {
         await this.adultsMinusButton.click();
       } else {
@@ -100,20 +110,36 @@ export class GetQuotePage {
       }
     }
   }
-  // 2. Increase No of Children (only if Family travel type is selected)
+  // 2. Increase No of Children (Family)
   async increaseChildren(count: number) {
-    if (!this.childrenPlusButton) return;
     for (let i = 0; i < count; i++) {
       await this.childrenPlusButton.click();
     }
   }
-  // 2. Decrease No of Children (cannot go below 1, only if Family travel type is selected)
+  // 2. Decrease No of Children (Family, cannot go below 1)
   async decreaseChildren(count: number) {
-   if (!this.childrenMinusButton) return;
     for (let i = 0; i < count; i++) {
-      const value = await this.childrenCountInput.innerHTML();
+      const value = await this.childrenCountInput.innerText();
       if (parseInt(value) > 1) {
         await this.childrenMinusButton.click();
+      } else {
+        break;
+      }
+    }
+  }
+
+  // 2. Increase No of Individuals (Individual)
+  async increaseIndividuals(count: number) {
+    for (let i = 0; i < count; i++) {
+      await this.individualsPlusButton.click();
+    }
+  }
+  // 2. Decrease No of Individuals (Individual, cannot go below 1)
+  async decreaseIndividuals(count: number) {
+    for (let i = 0; i < count; i++) {
+      const value = await this.individualsCountInput.innerText();
+      if (parseInt(value) > 1) {
+        await this.individualsMinusButton.click();
       } else {
         break;
       }
@@ -133,9 +159,12 @@ export class GetQuotePage {
     if (count > 1) {
       // skip first if it's a placeholder
       const randomIndex = Math.floor(Math.random() * (count - 1)) + 1;
-      await options[randomIndex].click();
+      const value = await options[randomIndex].getAttribute('value');
+      console.log('Randomly selected area option index:', randomIndex, 'value:', value);
+      await this.areaDropdown.selectOption(value || '');
     } else if (count === 1) {
-      await options[0].click();
+      const value = await options[0].getAttribute('value');
+      await this.areaDropdown.selectOption(value || '');
     }
   }
 

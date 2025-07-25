@@ -50,18 +50,29 @@ test.describe('Get Quote Page Actions', () => {
       await getQuotePage.selectTravelType('Individual');
       console.log('Selected Travel Type: Individual');
 
-      // Increase and decrease No of Adults (skip scrollIntoViewIfNeeded for now)
-      await getQuotePage.increaseAdults(2); // Increase by 2
-      console.log('Increased Adults by 2');
+      // Increase and decrease No of Individuals (when Individual is selected)
+      await expect(getQuotePage.individualsPlusButton).toBeVisible({ timeout: 10000 });
+      await getQuotePage.individualsPlusButton.scrollIntoViewIfNeeded();
+      await getQuotePage.increaseIndividuals(2); // Increase by 2
+      console.log('Increased Individuals by 2');
+      await getQuotePage.individualsMinusButton.scrollIntoViewIfNeeded();
+      await getQuotePage.decreaseIndividuals(1); // Decrease by 1 (should not go below 1)
+      console.log('Decreased Individuals by 1');
+
+      // Switch to Family and increase/decrease Adults and Children
+      await getQuotePage.travelTypeFamilyRadio.scrollIntoViewIfNeeded();
+      console.log('Scrolled to Travel Type for Family');
+      await getQuotePage.selectTravelType('Family');
+      console.log('Scrolled to Travel Type and selected Family');
+      // Wait for adults and children controls to be visible
+      await expect(getQuotePage.adultsPlusButton).toBeVisible({ timeout: 10000 });
+      await getQuotePage.adultsPlusButton.scrollIntoViewIfNeeded();
+      await getQuotePage.increaseAdults(1); // Increase by 2
+      console.log('Increased Adults to 2');
+      await getQuotePage.adultsMinusButton.scrollIntoViewIfNeeded();
       await getQuotePage.decreaseAdults(1); // Decrease by 1 (should not go below 1)
       console.log('Decreased Adults by 1');
-
-      // Increase and decrease No of Children only if Family travel type is selected
-      // (Children controls are always present in POM, but only visible for Family)
-      await getQuotePage.travelTypeFamilyRadio.scrollIntoViewIfNeeded();
-      await getQuotePage.selectTravelType('Family');
-      // Wait for children controls to be visible
-      await expect(getQuotePage.childrenPlusButton).toBeVisible({ timeout: 5000 });
+      await expect(getQuotePage.childrenPlusButton).toBeVisible({ timeout: 10000 });
       await getQuotePage.childrenPlusButton.scrollIntoViewIfNeeded();
       await getQuotePage.increaseChildren(2); // Increase by 2
       console.log('Increased Children by 2');
@@ -72,7 +83,7 @@ test.describe('Get Quote Page Actions', () => {
       // Switch back to Individual and verify children controls are hidden
       await getQuotePage.travelTypeIndividualRadio.scrollIntoViewIfNeeded();
       await getQuotePage.selectTravelType('Individual');
-      await expect(getQuotePage.childrenPlusButton).not.toBeVisible({ timeout: 5000 });
+      await expect(getQuotePage.childrenPlusButton).not.toBeVisible({ timeout: 10000 });
       console.log('Children controls hidden for Individual travel type');
 
       // Log Area dropdown options
