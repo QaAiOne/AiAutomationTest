@@ -68,10 +68,6 @@ export class GetQuotePage {
     this.individualsMinusButton = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//button[contains(@class, "stepper-view-subtract")]');
     this.individualsPlusButton = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//button[contains(@class, "stepper-view-add")]');
     this.individualsCountInput = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//div');
-    // Removed duplicate/conflicting areaDropdown assignment
-    this.startDateInput = page.locator('//input[@id="dailyStartDate"]');
-    this.endDateInput = page.locator('//input[@name="endDate" or @placeholder="End Date"]');
-    this.getQuoteButton = page.locator('//button[contains(text(), "Get Quote")]');
   }
 
   // 1. Select Trip Type radio
