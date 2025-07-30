@@ -9,6 +9,23 @@
   "description": "",
   "devDependencies": {
     "@playwright/test": "^1.54.1",
-    "@types/node": "^24.0.15"
-  }
+    "@types/exceljs": "^0.5.3",
+    "@types/node": "^24.0.15",
+    "exceljs": "^4.4.0"
+  },
+  "dependencies": {
+    "xlsx": "^0.18.5"
+  },
+  "directories": {
+    "test": "tests"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AidenMubeen/Mubeen_UnqorkTestApp.git"
+  },
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/AidenMubeen/Mubeen_UnqorkTestApp/issues"
+  },
+  "homepage": "https://github.com/AidenMubeen/Mubeen_UnqorkTestApp#readme"
 }

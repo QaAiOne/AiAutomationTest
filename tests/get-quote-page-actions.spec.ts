@@ -98,7 +98,7 @@ test.describe('Get Quote Page Actions', () => {
 
       // Select Start and End Date
       await getQuotePage.startDateInput.scrollIntoViewIfNeeded();
-      await getQuotePage.selectDates('2025-08-01', '2025-08-10');
+      await getQuotePage.selectDates('01-08-2025', '10-08-2025');
       console.log('Selected Start and End Date');
 
       // Click Get Quote button

@@ -28,4 +28,43 @@ export class PaymentAmountPage {
     this.submitButton = page.locator('button#btnSubmit');
     this.previousButton = page.locator('button#nav-prev-btn');
   }
-}
+
+  // Fetch and log values from ApplicationData.json
+  async logApplicationDataFromJson() {
+    const fs = require('fs');
+    const path = require('path');
+    const jsonPath = path.resolve('ApplicationData.json');
+    if (fs.existsSync(jsonPath)) {
+      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+      const values = Object.values(data);
+      console.log('ApplicationData.json values:', values);
+    } else {
+      console.log('ApplicationData.json file not found.');
+    }
+  }
+
+  // Read ApplicationData.json and fill the payment form fields
+  async fillFormFromJson() {
+    const fs = require('fs');
+    const path = require('path');
+    const jsonPath = path.resolve('ApplicationData.json');
+    if (fs.existsSync(jsonPath)) {
+      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+      if (data.paymentAmount) await this.paymentAmount.fill(data.paymentAmount);
+      if (data.cardType) await this.cardTypeDropdown.selectOption(data.cardType);
+      if (data.nameOnCard) await this.nameOnCard.fill(data.nameOnCard);
+      if (data.expirationMonth) await this.expirationMonthDropdown.selectOption(data.expirationMonth);
+      if (data.cardNumber) await this.cardNumber.fill(data.cardNumber);
+      if (data.expirationYear) await this.expirationYear.fill(data.expirationYear);
+      if (data.securityCode) await this.securityCode.fill(data.securityCode);
+      if (data.zipCode) await this.zipCode.fill(data.zipCode);
+      if (data.agreeChecked) {
+        const checked = await this.agreeCheckbox.isChecked();
+        if (!checked) await this.agreeCheckbox.check();
+      }
+    } else {
+      console.log('ApplicationData.json file not found.');
+    }
+  }
+
+  }
