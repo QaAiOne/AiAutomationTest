@@ -45,11 +45,12 @@ export class CompleteApplicationPage {
   // 2. Select any of the dropdown options randomly for salutationDropdown
   async selectRandomSalutationOption() {
     const options = await this.salutationDropdown.locator('option').all();
-    if (options.length === 0) throw new Error('No options found in salutation dropdown');
-    const randomIndex = Math.floor(Math.random() * options.length);
+    if (options.length <= 1) throw new Error('Not enough options to select a random salutation (excluding first option)');
+    // Exclude the first option (usually a placeholder like 'Select...')
+    const randomIndex = Math.floor(Math.random() * (options.length - 1)) + 1;
     const value = await options[randomIndex].getAttribute('value');
     await this.salutationDropdown.selectOption(value || '');
-    console.log('Randomly selected salutation:', await options[randomIndex].textContent());
+    console.log('Randomly selected salutation (not first option):', await options[randomIndex].textContent());
   }
 
   // 3. Select the dropdown option for salutationDropdown which the user passes as value
@@ -114,7 +115,7 @@ export class CompleteApplicationPage {
   // 8. Validate emailInput field with invalid and empty input
   async validateEmailInputWithInvalidAndEmpty() {
     await this.emailInput.fill('invalidEmail');
-    // Assume error message appears below input
+    // Locator for email validation error
     const errorLocator = this.page.locator('//*[@id="email-errors"]/ul/li');
     let errorMsg = '';
     try {
@@ -277,5 +278,79 @@ export class CompleteApplicationPage {
     await this.nextButton.scrollIntoViewIfNeeded();
     await this.nextButton.click();
     console.log('Clicked Next button');
+  }
+
+  // 22. Click Next button and save data to JSON
+  async clickNext2() {
+    // Using static data for demonstration (replace with actual field reads as needed)
+    const salutation = "Mr";
+    const name = "Diablo sama";
+    const dateOfBirth = '01/01/1990';
+    const identityType = "Aadhar Card";
+    let aadharNumber = '123412341234';
+    let panNumber = 'abcxyz12121';
+    const mobileNumber = '9885123123';
+    const gender = "Primordial";
+    const nationality = "Tensura";
+    const address = "Slime datta ken no Tensei";
+
+    // Write to JSON file
+    const fs = require('fs');
+    const path = require('path');
+    const jsonPath = path.resolve('ApplicationData.json');
+    const data = {
+      Salutation: salutation,
+      Name: name,
+      "Date of Birth": dateOfBirth,
+      "Identity Type": identityType,
+      "Aadhar Number": aadharNumber,
+      "Pan Number": panNumber,
+      "Mobile Number": mobileNumber,
+      Gender: gender,
+      Nationality: nationality,
+      Address: address
+    };
+    fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf-8');
+    console.log('Saved form data to ApplicationData.json:', data);
+
+    // Fill form fields with values from ApplicationFillData.json
+  }
+
+  // Fill form fields with values from ApplicationFillData.json
+  async fillFormFromJson() {
+    const fs = require('fs');
+    const path = require('path');
+    const jsonPath = path.resolve('ApplicationFillData.json');
+    if (fs.existsSync(jsonPath)) {
+      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+      await this.salutationDropdown.scrollIntoViewIfNeeded();
+      if (data.Salutation) await this.salutationDropdown.selectOption({ label: data.Salutation });
+      if (data.Name) await this.nameInput.fill(data.Name);
+      //if (data['Date of Birth']) await this.dateOfBirthInput.fill(data['Date of Birth']);
+      if (data['Email Address']) await this.emailInput.fill(data['Email Address']);
+      await this.page.waitForTimeout(1000);
+      if (data['Identity Type']) await this.identityTypeDropdown.selectOption({ label: data['Identity Type'] });
+      await this.page.waitForTimeout(1000);
+      if (data.Gender) await this.genderDropdown.selectOption({ label: data.Gender });
+      await this.page.waitForTimeout(3000);
+      await this.mobileNumberInput.scrollIntoViewIfNeeded();
+      if (data['Mobile Number']) await this.mobileNumberInput.fill(data['Mobile Number']);
+      await this.page.waitForTimeout(1000);
+      if (data.Nationality) await this.nationalityDropdown.selectOption({ label: data.Nationality });
+      await this.page.waitForTimeout(1000);
+      if (data.Address) await this.addressInput.fill(data.Address);
+      const resultLocator = this.page.locator('[id^="react-select-2-option-"]');
+      await resultLocator.first().waitFor({ timeout: 5000 });
+      const firstResult = resultLocator.first();
+      await firstResult.click();
+      // Add more mappings as needed for your form fields
+      console.log('Filled form fields from ApplicationFillData.json');
+    } else {
+      console.log('ApplicationFillData.json file not found.');
+  }
+    // Click Next button
+    await this.nextButton.scrollIntoViewIfNeeded();
+    await this.nextButton.click();
+    console.log('Clicked Next button (clickNext2)');
   }
 }

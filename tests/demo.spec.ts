@@ -16,26 +16,16 @@ test.describe('Complete Application Demo', () => {
     // Now on Complete Application page
     const completeAppPage = new CompleteApplicationPage(page);
 
-    // 18. Interact with Address search bar, input value, select first result
-    await completeAppPage.addressInput.scrollIntoViewIfNeeded();
-    await completeAppPage.searchAndSelectAddress('New York');
-    await page.waitForTimeout(2000);
-    console.log('Paused 2s after searchAndSelectAddress:', new Date().toLocaleTimeString());
-
-    // 19. Clear the selected Address and validate the error message
-    await completeAppPage.addressInput.scrollIntoViewIfNeeded();
-    await completeAppPage.clearAddressAndCheckValidation();
-    await page.waitForTimeout(2000);
-    console.log('Paused 2s after clearAddressAndCheckValidation:', new Date().toLocaleTimeString());
-
-    // 20. Click Previous button
-    await completeAppPage.clickPreviousButton();
-    await page.waitForTimeout(2000);
-    console.log('Paused 2s after clickPreviousButton:', new Date().toLocaleTimeString());
-
-    // 21. Click Next button
-    await completeAppPage.clickNextButton();
+    // Filling Form Data nd clicking Next button
+    await completeAppPage.fillFormFromJson();
     await page.waitForTimeout(2000);
     console.log('Paused 2s after clickNextButton:', new Date().toLocaleTimeString());
+    await completeAppPage.nextButton.scrollIntoViewIfNeeded();
+
+    // Now on Summary Page: log and compare summary info
+    const { SummaryPage } = require('../pages/summaryPage');
+    const summaryPage = new SummaryPage(page);
+    await summaryPage.logSummaryInfo();
+    await summaryPage.compareWithApplicationFillData();
   });
 });
