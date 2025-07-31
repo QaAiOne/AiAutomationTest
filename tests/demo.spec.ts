@@ -25,7 +25,7 @@ test.describe('Complete Application Demo', () => {
     // Now on Summary Page: log and compare summary info
     const { SummaryPage } = require('../pages/summaryPage');
     const summaryPage = new SummaryPage(page);
-    await summaryPage.logSummaryInfo();
+    await summaryPage.getSummaryInfo();
     await summaryPage.compareWithApplicationFillData();
   });
 });

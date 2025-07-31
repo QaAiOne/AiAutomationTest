@@ -1,4 +1,4 @@
-import { Page, Locator } from '@playwright/test';
+import { Page, Locator, expect } from '@playwright/test';
 
 export class CompleteApplicationPage {
   readonly page: Page;
@@ -312,8 +312,6 @@ export class CompleteApplicationPage {
     };
     fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf-8');
     console.log('Saved form data to ApplicationData.json:', data);
-
-    // Fill form fields with values from ApplicationFillData.json
   }
 
   // Fill form fields with values from ApplicationFillData.json
@@ -326,11 +324,20 @@ export class CompleteApplicationPage {
       await this.salutationDropdown.scrollIntoViewIfNeeded();
       if (data.Salutation) await this.salutationDropdown.selectOption({ label: data.Salutation });
       if (data.Name) await this.nameInput.fill(data.Name);
-      //if (data['Date of Birth']) await this.dateOfBirthInput.fill(data['Date of Birth']);
-      if (data['Email Address']) await this.emailInput.fill(data['Email Address']);
-      await this.page.waitForTimeout(1000);
+      if (data['Date of Birth']) 
+      {
+        await this.dateOfBirthInput.press('0');
+        await this.dateOfBirthInput.press('1');
+        await this.dateOfBirthInput.press('0');
+        await this.dateOfBirthInput.press('1');
+        await this.dateOfBirthInput.press('1');
+        await this.dateOfBirthInput.press('9');
+        await this.dateOfBirthInput.press('8');
+        await this.dateOfBirthInput.press('0');
+        await this.page.waitForTimeout(500);
+      }
       if (data['Identity Type']) await this.identityTypeDropdown.selectOption({ label: data['Identity Type'] });
-      await this.page.waitForTimeout(1000);
+      if (data['Email Address']) await this.emailInput.fill(data['Email Address']);
       if (data.Gender) await this.genderDropdown.selectOption({ label: data.Gender });
       await this.page.waitForTimeout(3000);
       await this.mobileNumberInput.scrollIntoViewIfNeeded();
@@ -351,6 +358,6 @@ export class CompleteApplicationPage {
     // Click Next button
     await this.nextButton.scrollIntoViewIfNeeded();
     await this.nextButton.click();
-    console.log('Clicked Next button (clickNext2)');
+    console.log('Clicked Next button on Complete Application page');
   }
 }

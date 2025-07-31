@@ -1,6 +1,27 @@
 import { Page, Locator } from '@playwright/test';
 
 export class GetQuotePage {
+  // Adults controls (Family)
+  readonly adultsMinusButton: Locator;
+  readonly adultsPlusButton: Locator;
+  readonly adultsCountInput: Locator;
+  // Children controls (Family)
+  readonly childrenMinusButton: Locator;
+  readonly childrenPlusButton: Locator;
+  readonly childrenCountInput: Locator;
+  // Get Quote results cards and Select buttons
+  readonly getQuoteResultsSection: Locator;
+  readonly valueCard: Locator;
+  readonly plusCard: Locator;
+  readonly proCard: Locator;
+  readonly valueCardSelectButton: Locator;
+  readonly plusCardSelectButton: Locator;
+  readonly proCardSelectButton: Locator;
+  // Stepper circle locators (above the form)
+  readonly getQuoteCircle: Locator;
+  readonly completeApplicationCircle: Locator;
+  readonly summaryPageCircle: Locator;
+  readonly paymentAmountCircle: Locator;
   // For Individual travel type
   readonly individualsMinusButton: Locator;
   readonly individualsPlusButton: Locator;
@@ -25,14 +46,44 @@ export class GetQuotePage {
   readonly getQuoteButton: Locator;
   readonly nextButton: Locator;
 
-  // Additional elements for actions
-  readonly adultsMinusButton: Locator;
-  readonly adultsPlusButton: Locator;
-  readonly adultsCountInput: Locator;
-  readonly childrenMinusButton: Locator;
-  readonly childrenPlusButton: Locator;
-  readonly childrenCountInput: Locator;
-  // ...existing code...
+
+  // Fetch and display the color of the circles in the step display bar
+  async logStepCircleColors() {
+    // Log the color of each stepper circle using explicit locators
+    const steps = [
+      { name: 'Get Quote', locator: this.getQuoteCircle },
+      { name: 'Complete Application', locator: this.completeApplicationCircle },
+      { name: 'Summary Page', locator: this.summaryPageCircle },
+      { name: 'Payment Amount', locator: this.paymentAmountCircle },
+    ];
+    let selectedStep: string | null = null;
+    for (const step of steps) {
+      try {
+        const handle = await step.locator.elementHandle();
+        if (handle) {
+          const color = await handle.evaluate(el => {
+            const style = window.getComputedStyle(el as Element);
+            return style.backgroundColor || style.borderColor;
+          });
+          let selectedMsg = '';
+          if (color === 'rgba(0, 0, 0, 0)') {
+            selectedStep = step.name;
+            selectedMsg = ' (SELECTED)';
+          }
+          console.log(`Step circle for '${step.name}' color:`, color + selectedMsg);
+        } else {
+          console.log(`Step circle for '${step.name}' not found.`);
+        }
+      } catch (err) {
+        console.log(`Error fetching color for '${step.name}':`, err?.message || err);
+      }
+    }
+    if (selectedStep) {
+      console.log(`Selected step: ${selectedStep}`);
+    } else {
+      console.log('No step is currently selected (no circle with rgba(0, 0, 0, 0) color).');
+    }
+  }
 
   constructor(page: Page) {
     this.page = page;
@@ -42,6 +93,13 @@ export class GetQuotePage {
     this.completeApplicationStep = page.locator('//div[contains(@class, "stepper")]//div[contains(text(), "Complete Application")]');
     this.paymentMethodStep = page.locator('//div[contains(@class, "stepper")]//div[contains(text(), "Payment Method")]');
     this.paymentSuccessStep = page.locator('//div[contains(@class, "stepper")]//div[contains(text(), "Payment Success")]');
+    // Cards are identified by their container divs (by id), and their title and select button are children
+    this.valueCard = page.locator('//*[@id="basicHtml"]');
+    this.plusCard = page.locator('//*[@id="essentialHtml"]');
+    this.proCard = page.locator('//*[@id="preferredHtml"]');
+    this.valueCardSelectButton = this.valueCard.locator('.//button[@id="btnBasic"]//span');
+    this.plusCardSelectButton = this.plusCard.locator('.//button[@id="btnEssential"]//span');
+    this.proCardSelectButton = this.proCard.locator('.//button[@id="btnPreffered"]//span');
 
     // Main page elements (from actual UI)
     //this.travelInsurancePlanHeader = page.locator('//h2[contains(text(), "Travel Insurance Plan")]');
@@ -68,9 +126,10 @@ export class GetQuotePage {
     this.individualsMinusButton = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//button[contains(@class, "stepper-view-subtract")]');
     this.individualsPlusButton = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//button[contains(@class, "stepper-view-add")]');
     this.individualsCountInput = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//div');
+
   }
 
-  // 1. Select Trip Type radio
+  // Select Trip Type radio
   async selectTripType(type: 'Single Trip' | 'Annual Trip') {
     if (type === 'Single Trip') {
       await this.tripTypeSingleRadio.check();
@@ -79,7 +138,7 @@ export class GetQuotePage {
     }
   }
 
-  // 1. Select Travel Type radio
+  // Select Travel Type radio
   async selectTravelType(type: 'Individual' | 'Family') {
     if (type === 'Individual') {
       await this.travelTypeIndividualRadio.check();
@@ -88,11 +147,36 @@ export class GetQuotePage {
     }
   }
 
+  // Check if Get Quote button is hidden
+  async isGetQuoteButtonHidden() {
+    // Check if Get Quote button is not visible
+    return !(await this.getQuoteButton.isVisible());
+  }
+
+  // Check if results cards are visible
+  async areResultsCardsVisible() {
+    // Check if all three card titles are visible
+    const valueVisible = await this.valueCard.isVisible();
+    const plusVisible = await this.plusCard.isVisible();
+    const proVisible = await this.proCard.isVisible();
+    return valueVisible && plusVisible && proVisible;
+  }
+
+  // Select a card by title ("Value", "Plus", "Pro")
+  async selectCardByTitle(title: 'Value' | 'Plus' | 'Pro') {
+    let cardButton;
+    if (title === 'Value') cardButton = this.valueCardSelectButton;
+    else if (title === 'Plus') cardButton = this.plusCardSelectButton;
+    else cardButton = this.proCardSelectButton;
+    await cardButton.scrollIntoViewIfNeeded();
+    await cardButton.click();
+  }
+
   // 2. Increase No of Adults (Family)
   async increaseAdults(count: number) {
     for (let i = 0; i < count; i++) {
       await this.adultsPlusButton.click();
-       console.log('Clicked Increase Adults button'+i+1);
+      console.log('Clicked Increase Adults button'+(i+1));
     }
   }
   // 2. Decrease No of Adults (Family, cannot go below 1)
@@ -167,7 +251,16 @@ export class GetQuotePage {
   // 5. Select Start and End Date
   async selectDates(startDate: string, endDate: string) {
     await this.startDateInput.fill(startDate);
+    // Wait for 2 seconds after entering dates
+    await this.page.waitForTimeout(1000);
+    // Close the calendar popup if open by pressing Escape
+    await this.page.keyboard.press('Escape');  
+    await this.page.waitForTimeout(1000);  
     await this.endDateInput.fill(endDate);
+    // Wait for 2 seconds after entering dates
+    await this.page.waitForTimeout(1000);
+    // Close the calendar popup if open by pressing Escape
+    await this.page.keyboard.press('Escape');
   }
 
   // 6. Click Get Quote button
@@ -178,5 +271,7 @@ export class GetQuotePage {
   // 7. Click Next button
   async clickNext() {
     await this.nextButton.click();
+    await this.page.waitForTimeout(3000);
+    console.log('Waited 3 seconds after clicking Next button');
   }
 }

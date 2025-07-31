@@ -24,7 +24,7 @@ export class SummaryPage {
   genderText: string;
   nationalityText: string;
   addressText: string;
-
+  
   constructor(page: Page) {
     this.page = page;
     this.salutation = page.locator('input#salutationInfo');
@@ -38,16 +38,25 @@ export class SummaryPage {
     this.nextButton = page.locator('button#nav-next-btn');
     this.saveAndExitButton = page.locator('button#nav-save-draft-btn');
   }
-  // Function to log summary information  
-  async logSummaryInfo() {
+
+formatDateToDDMMYYYY(dateStr: string): string {
+  if (!dateStr) return '';
+  const [year, month, day] = dateStr.split('-');
+  return `${day}/${month}/${year}`;
+}
+
+  async getSummaryInfo()
+  {
     this.salutationText = await this.salutation.inputValue();
     this.nameText = await this.name.inputValue();
-    this.dobText = await this.dateOfBirth.inputValue();
+    this.dobText = this.formatDateToDDMMYYYY(await this.dateOfBirth.inputValue());
     this.emailText = await this.email.inputValue();
     this.identityText = await this.identity.inputValue();
     this.mobileText = await this.mobileNumber.inputValue();
     this.genderText = await this.gender.inputValue();
-    
+  }
+
+  async logSummaryInfo() {
     console.log('Summary Page Data Information:');
     console.log('Salutation:', this.salutationText);
     console.log('Name:', this.nameText);
@@ -56,7 +65,6 @@ export class SummaryPage {
     console.log('Identity:', this.identityText);
     console.log('Mobile Number:', this.mobileText);
     console.log('Gender:', this.genderText);
-
 }
 
   //Function to fetch data from ApplicationData.json and compare them to the summary page values

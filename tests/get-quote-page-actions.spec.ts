@@ -91,25 +91,47 @@ test.describe('Get Quote Page Actions', () => {
       await getQuotePage.logAreaDropdownOptions();
       console.log('Logged Area dropdown options');
 
+      // Select Start and End Date
+      await getQuotePage.startDateInput.scrollIntoViewIfNeeded();
+      await getQuotePage.selectDates('01-08-2025', '10-08-2025');
+      console.log('Selected Start and End Date');
+      
       // Select random Area option
       await getQuotePage.areaDropdown.scrollIntoViewIfNeeded();
       await getQuotePage.selectRandomAreaOption();
       console.log('Selected random Area option');
 
-      // Select Start and End Date
-      await getQuotePage.startDateInput.scrollIntoViewIfNeeded();
-      await getQuotePage.selectDates('01-08-2025', '10-08-2025');
-      console.log('Selected Start and End Date');
+      // Log stepper circle colors after selecting area
+     // await getQuotePage.logStepCircleColors();
 
       // Click Get Quote button
       await getQuotePage.getQuoteButton.scrollIntoViewIfNeeded();
       await getQuotePage.clickGetQuote();
       console.log('Clicked Get Quote button');
 
+      // Log stepper circle colors after clicking Get Quote
+      //await getQuotePage.logStepCircleColors();
+
+      // Validate Get Quote button is hidden and cards are visible
+      expect(await getQuotePage.isGetQuoteButtonHidden()).toBe(true);
+      expect(await getQuotePage.areResultsCardsVisible()).toBe(true);
+
+      // Validate Select button text before selection
+      expect((await getQuotePage.valueCardSelectButton.textContent())?.toLowerCase()).toContain('select');
+      expect((await getQuotePage.plusCardSelectButton.textContent())?.toLowerCase()).toContain('select');
+      expect((await getQuotePage.proCardSelectButton.textContent())?.toLowerCase()).toContain('select');
+
+      // Click Select on the Plus card and validate button text changes to Selected
+      await getQuotePage.selectCardByTitle('Plus');
+      expect((await getQuotePage.plusCardSelectButton.textContent())?.toLowerCase()).toContain('selected');
+
       // Click Next button
       await getQuotePage.nextButton.scrollIntoViewIfNeeded();
       await getQuotePage.clickNext();
       console.log('Clicked Next button');
+
+      // Log stepper circle colors after clicking Next
+      await getQuotePage.logStepCircleColors();
     } catch (error) {
       // Take screenshot on failure only if page is not closed
       if (!page.isClosed()) {
