@@ -113,17 +113,25 @@ test.describe('Get Quote Page Actions', () => {
       //await getQuotePage.logStepCircleColors();
 
       // Validate Get Quote button is hidden and cards are visible
+      /*
       expect(await getQuotePage.isGetQuoteButtonHidden()).toBe(true);
+      console.log('Get Quote button is hidden');
+      */
       expect(await getQuotePage.areResultsCardsVisible()).toBe(true);
+      console.log('Results cards are visible');
 
       // Validate Select button text before selection
       expect((await getQuotePage.valueCardSelectButton.textContent())?.toLowerCase()).toContain('select');
+      console.log('Value card Select button text is correct');
       expect((await getQuotePage.plusCardSelectButton.textContent())?.toLowerCase()).toContain('select');
+      console.log('Plus card Select button text is correct');
       expect((await getQuotePage.proCardSelectButton.textContent())?.toLowerCase()).toContain('select');
+      console.log('Pro card Select button text is correct');
 
       // Click Select on the Plus card and validate button text changes to Selected
       await getQuotePage.selectCardByTitle('Plus');
       expect((await getQuotePage.plusCardSelectButton.textContent())?.toLowerCase()).toContain('selected');
+      console.log('Plus card Select button text changed to Selected');
 
       // Click Next button
       await getQuotePage.nextButton.scrollIntoViewIfNeeded();

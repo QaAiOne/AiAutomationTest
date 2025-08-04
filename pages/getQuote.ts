@@ -97,9 +97,14 @@ export class GetQuotePage {
     this.valueCard = page.locator('//*[@id="basicHtml"]');
     this.plusCard = page.locator('//*[@id="essentialHtml"]');
     this.proCard = page.locator('//*[@id="preferredHtml"]');
+    this.valueCardSelectButton = page.locator('#btnBasic span');
+    this.plusCardSelectButton = page.locator('#btnEssential span');
+    this.proCardSelectButton = page.locator('#btnPreffered span');
+    /*
     this.valueCardSelectButton = this.valueCard.locator('.//button[@id="btnBasic"]//span');
     this.plusCardSelectButton = this.plusCard.locator('.//button[@id="btnEssential"]//span');
     this.proCardSelectButton = this.proCard.locator('.//button[@id="btnPreffered"]//span');
+    */
 
     // Main page elements (from actual UI)
     //this.travelInsurancePlanHeader = page.locator('//h2[contains(text(), "Travel Insurance Plan")]');
@@ -112,7 +117,7 @@ export class GetQuotePage {
     this.endDateInput = page.locator('//input[@id="dailyEndDate"]');
     this.areaDropdown = page.locator('#visiting');
     this.getQuoteButton = page.locator('//button[contains(., "Get Quote")]');
-    this.nextButton = page.locator('//button[contains(., "Next")]');
+    this.nextButton = page.locator('//*[@id="nav-next-btn"]');
 
     this.adultsMinusButton = page.locator('//label[contains(text(), "No of Adults")]/following-sibling::div//button[contains(@class, "stepper-view-subtract")]');
     this.adultsPlusButton = page.locator('//label[contains(text(), "No of Adults")]/following-sibling::div//button[contains(@class, "stepper-view-add")]'); 
@@ -150,7 +155,7 @@ export class GetQuotePage {
   // Check if Get Quote button is hidden
   async isGetQuoteButtonHidden() {
     // Check if Get Quote button is not visible
-    return !(await this.getQuoteButton.isVisible());
+    return (await this.getQuoteButton.isHidden());
   }
 
   // Check if results cards are visible
