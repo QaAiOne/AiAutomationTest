@@ -1,6 +1,28 @@
 import { Page, Locator } from '@playwright/test';
 
 export class PaymentAmountPage {
+
+  // Fill payment form fields from ApplicationFillData.json
+  async fillPaymentFormFromJson() {
+    const fs = require('fs');
+    const path = require('path');
+    const jsonPath = path.resolve('ApplicationFillData.json');
+    if (fs.existsSync(jsonPath)) {
+      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+      if (data['Insurance Plan']) await this.validatePaymentAmount(data['Insurance Plan']);
+      if (data['Card type']) await this.selectCardType(data['Card type']);
+      if (data['Name']) await this.setNameOnCard(data['Name']);
+      if (data['Card Number']) await this.setCardNumber(data['Card Number']);
+      if (data['Security Code']) await this.setSecurityCode(data['Security Code']);
+      if (data['Expiration Month']) await this.selectExpirationMonth(data['Expiration Month']);
+      if (data['Expiration Year']) await this.setExpirationYear(data['Expiration Year']);
+      if (data['Zip Code']) await this.setZipcode(data['Zip Code']);
+      console.log('Filled payment form fields from ApplicationFillData.json');
+    } else {
+      console.log('ApplicationFillData.json file not found.');
+    }
+  }
+
   readonly page: Page;
   readonly paymentAmount: Locator;
   readonly cardTypeDropdown: Locator;
@@ -29,42 +51,65 @@ export class PaymentAmountPage {
     this.previousButton = page.locator('button#nav-prev-btn');
   }
 
-  // Fetch and log values from ApplicationData.json
-  async logApplicationDataFromJson() {
-    const fs = require('fs');
-    const path = require('path');
-    const jsonPath = path.resolve('ApplicationData.json');
-    if (fs.existsSync(jsonPath)) {
-      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
-      const values = Object.values(data);
-      console.log('ApplicationData.json values:', values);
+  // 1. Validate payment amount based on plan type
+  async validatePaymentAmount(planType: string) {
+    const expectedAmounts: Record<string, string> = {
+      'Value': '10,000',
+      'Plus': '50,000',
+      'Pro': '90,000',
+    };
+    const expected = expectedAmounts[planType];
+    const actual = await this.paymentAmount.inputValue();
+    if (actual === expected) {
+      console.log(`Payment amount for ${planType} is correct: ${actual}`);
     } else {
-      console.log('ApplicationData.json file not found.');
+      throw new Error(`Payment amount for ${planType} is incorrect. Expected: ${expected}, Actual: ${actual}`);
     }
   }
 
-  // Read ApplicationData.json and fill the payment form fields
-  async fillFormFromJson() {
-    const fs = require('fs');
-    const path = require('path');
-    const jsonPath = path.resolve('ApplicationData.json');
-    if (fs.existsSync(jsonPath)) {
-      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
-      if (data.paymentAmount) await this.paymentAmount.fill(data.paymentAmount);
-      if (data.cardType) await this.cardTypeDropdown.selectOption(data.cardType);
-      if (data.nameOnCard) await this.nameOnCard.fill(data.nameOnCard);
-      if (data.expirationMonth) await this.expirationMonthDropdown.selectOption(data.expirationMonth);
-      if (data.cardNumber) await this.cardNumber.fill(data.cardNumber);
-      if (data.expirationYear) await this.expirationYear.fill(data.expirationYear);
-      if (data.securityCode) await this.securityCode.fill(data.securityCode);
-      if (data.zipCode) await this.zipCode.fill(data.zipCode);
-      if (data.agreeChecked) {
-        const checked = await this.agreeCheckbox.isChecked();
-        if (!checked) await this.agreeCheckbox.check();
-      }
-    } else {
-      console.log('ApplicationData.json file not found.');
-    }
+  // 2. Select Card Type from dropdown
+  async selectCardType(cardType: string) {
+    const card= cardType;
+    console.log(`Card value: ${card}`);
+    await this.cardTypeDropdown.selectOption(card);
+    console.log(`Selected card type: ${cardType}`);
   }
+
+  // 3. Set Name on Card
+  async setNameOnCard(name: string) {
+    await this.nameOnCard.fill(name);
+    console.log(`Set Name on Card: ${name}`);
+  }
+
+  // 4. Set Card Number
+  async setCardNumber(cardNumber: string) {
+    await this.cardNumber.fill(cardNumber);
+    console.log(`Set Card Number: ${cardNumber}`);
+  }
+
+  // 5. Set Security Code
+  async setSecurityCode(code: string) {
+    await this.securityCode.fill(code);
+    console.log(`Set Security Code: ${code}`);
+  }
+
+  // 6. Select Expiration Month from dropdown
+  async selectExpirationMonth(month: string) {
+    await this.expirationMonthDropdown.selectOption({ label: month });
+    console.log(`Selected Expiration Month: ${month}`);
+  }
+
+  // 7. Set Expiration Year
+  async setExpirationYear(year: string) {
+    await this.expirationYear.fill(year);
+    console.log(`Set Expiration Year: ${year}`);
+  }
+
+  // 8. Set Zipcode
+  async setZipcode(zip: string) {
+    await this.zipCode.fill(zip);
+    console.log(`Set Zip Code to: ${zip}`);
+  }
+
 
   }
