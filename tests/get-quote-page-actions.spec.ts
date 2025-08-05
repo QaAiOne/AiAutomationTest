@@ -119,6 +119,7 @@ test.describe('Get Quote Page Actions', () => {
       */
       expect(await getQuotePage.areResultsCardsVisible()).toBe(true);
       console.log('Results cards are visible');
+    
 
       // Validate Select button text before selection
       expect((await getQuotePage.valueCardSelectButton.textContent())?.toLowerCase()).toContain('select');

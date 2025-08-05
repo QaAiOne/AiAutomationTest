@@ -19,6 +19,7 @@ export class GetQuotePage {
   readonly proCardSelectButton: Locator;
   // Stepper circle locators (above the form)
   readonly getQuoteCircle: Locator;
+  readonly getQuoteCircle2: Locator;
   readonly completeApplicationCircle: Locator;
   readonly summaryPageCircle: Locator;
   readonly paymentAmountCircle: Locator;
@@ -132,7 +133,14 @@ export class GetQuotePage {
     this.individualsPlusButton = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//button[contains(@class, "stepper-view-add")]');
     this.individualsCountInput = page.locator('//label[contains(text(), "No of Individuals")]/following-sibling::div//div');
 
+    // Stepper circles (above the form)
+    this.getQuoteCircle = page.locator('//*[@id="nav-navigate-to-0"]/div[1]');
+    this.getQuoteCircle2 = page.locator('//*[@id="nav-navigate-to-0"]');
+    this.completeApplicationCircle = page.locator('//*[@id="nav-navigate-to-1"]/div[1]');
+    this.summaryPageCircle = page.locator('//*[@id="nav-navigate-to-2"]/div[1]');
+    this.paymentAmountCircle = page.locator('//*[@id="nav-navigate-to-2"]/div[1]');
   }
+
 
   // Select Trip Type radio
   async selectTripType(type: 'Single Trip' | 'Annual Trip') {
@@ -162,8 +170,11 @@ export class GetQuotePage {
   async areResultsCardsVisible() {
     // Check if all three card titles are visible
     const valueVisible = await this.valueCard.isVisible();
+    console.log('Value card visible:', valueVisible);
     const plusVisible = await this.plusCard.isVisible();
+    console.log('Plus card visible:', plusVisible);
     const proVisible = await this.proCard.isVisible();
+    console.log('Pro card visible:', proVisible);
     return valueVisible && plusVisible && proVisible;
   }
 
@@ -278,5 +289,32 @@ export class GetQuotePage {
     await this.nextButton.click();
     await this.page.waitForTimeout(3000);
     console.log('Waited 3 seconds after clicking Next button');
+  }
+  
+  /**
+   * Finds and returns the first stepper circle element with color #0F2E4E (rgb(15, 46, 78)).
+   * Returns the locator if found, otherwise null.
+   */
+  async getCircleWithColor0F2E4E(): Promise<Locator | null> {
+    // #0F2E4E in rgb is rgb(15, 46, 78)
+    const steps = [
+      this.getQuoteCircle,
+      this.completeApplicationCircle,
+      this.summaryPageCircle,
+      this.paymentAmountCircle
+    ];
+    for (const locator of steps) {
+      const handle = await locator.elementHandle();
+      if (handle) {
+        const color = await handle.evaluate(el => {
+          const style = window.getComputedStyle(el as Element);
+          console.log('Style is: '+style);          return style.backgroundColor || style.borderColor;
+        });
+        if (color === 'rgb(15, 46, 78)') {
+          return locator;
+        }
+      }
+    }
+    return null;
   }
 }

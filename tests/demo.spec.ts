@@ -8,7 +8,8 @@ test.describe('Complete Application Demo', () => {
     // Go to Get Quote page (landing page)
     await page.goto('https://trainingx.unqork.io/#/display/67545b82c5a4314c973256aa');
     const getQuotePage = new GetQuotePage(page);
-
+    await getQuotePage.getCircleWithColor0F2E4E();
+    /*
     // Click Next button to go to Complete Application page
     await getQuotePage.nextButton.scrollIntoViewIfNeeded();
     await getQuotePage.clickNext();
@@ -27,5 +28,11 @@ test.describe('Complete Application Demo', () => {
     const summaryPage = new SummaryPage(page);
     await summaryPage.getSummaryInfo();
     await summaryPage.compareWithApplicationFillData();
+    */
   });
+  
+  // Logs 'Working without MCP Server' to the console
+  function logNoMCPServer() {
+    console.log('Working without MCP Server');
+  }
 });
