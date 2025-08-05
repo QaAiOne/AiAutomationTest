@@ -1,4 +1,13 @@
 {
+  "Trip Type": "Annual Trip",
+  "Travel Type":"Family" ,
+  "No of Adults":"1",
+  "No of Children": "2",
+  "No of Individuals": "2",
+  "Start Date": "06/08/2025",
+  "End Date": "10/08/2025",
+  "Area": "Shimla",
+  "Insurance Plan": "Value",
   "Salutation": "Mr",
   "Name": "Veldora",
   "Date of Birth": "01/01/1980",
@@ -10,5 +19,11 @@
   "Gender": "Male",
   "Nationality": "South Korean",
   "Address": "Slime",
-  "Identity in Page": "Pan Number"
+  "Identity in Page": "Pan Number",
+  "Card type": "Credit Card",
+  "Card Number": "1234567890123456",
+  "Security Code": "321",
+  "Expiration Month": "06",
+  "Expiration Year": "27",
+  "Zip Code": "65412"
 }

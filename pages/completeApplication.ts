@@ -1,12 +1,15 @@
 import { Page, Locator, expect } from '@playwright/test';
 
 export class CompleteApplicationPage {
+
   readonly page: Page;
   // Example locators for Complete Application page elements
   readonly completeApplicationHeader: Locator;
   readonly salutationDropdown: Locator;
   readonly dateOfBirthInput: Locator;
   readonly identityTypeDropdown: Locator;
+  readonly aadharNumberInput: Locator;
+  readonly panNumberInput: Locator;
   readonly mobileNumberInput: Locator;
   readonly nationalityDropdown: Locator;
   readonly nameInput: Locator;
@@ -24,6 +27,8 @@ export class CompleteApplicationPage {
     this.salutationDropdown = page.locator('select#salutation');
     this.dateOfBirthInput = page.locator('input#dateOfBirth');
     this.identityTypeDropdown = page.locator('select#identity');
+    this.aadharNumberInput = page.locator('input#aadharNumber');
+    this.panNumberInput = page.locator('input#panNumber');
     this.mobileNumberInput = page.locator('input#mobileNumber');
     this.nationalityDropdown = page.locator('select#nationality');
     this.nameInput = page.locator('input#name');
@@ -57,6 +62,12 @@ export class CompleteApplicationPage {
   async selectSalutationOption(salutation: string) {
     await this.salutationDropdown.selectOption({ label: salutation });
     console.log('Selected salutation:', salutation);
+  }
+
+   // Enter value in name field
+  async enterName(name: string) {
+    await this.nameInput.fill(name);
+    console.log(`Entered name: ${name}`);
   }
 
   // 4. Function for entering random text in nameInput field, validate only characters allowed
@@ -107,9 +118,10 @@ export class CompleteApplicationPage {
   }
 
   // 7. Provide a past date for dateOfBirthInput
-  async enterPastDateOfBirth(date: string = '01/01/1990') {
+  async enterPastDateOfBirth(date: string) {
     await this.dateOfBirthInput.fill(date);
     console.log('Entered past date of birth:', date);
+    await this.page.waitForTimeout(500);
     await this.page.keyboard.press('Escape');  
     await this.page.waitForTimeout(500);  
   }
@@ -121,7 +133,7 @@ export class CompleteApplicationPage {
     const errorLocator = this.page.locator('//*[@id="email-errors"]/ul/li');
     let errorMsg = '';
     try {
-      await errorLocator.waitFor({ timeout: 3000 });
+      await errorLocator.waitFor({ timeout: 500 });
       errorMsg = (await errorLocator.textContent()) || '';
       console.log('Email input validation error (invalid):\n', errorMsg);
     } catch {
@@ -129,7 +141,7 @@ export class CompleteApplicationPage {
     }
     await this.emailInput.fill('');
     try {
-      await errorLocator.waitFor({ timeout: 3000 });
+      await errorLocator.waitFor({ timeout: 500 });
       errorMsg = (await errorLocator.textContent()) || '';
       console.log('Email input validation error (empty):\n', errorMsg);
     } catch {
@@ -144,7 +156,7 @@ export class CompleteApplicationPage {
     const errorLocator = this.page.locator('//*[@id="email-errors"]/ul/li');
     let errorMsg = '';
     try {
-      await errorLocator.waitFor({ timeout: 3000 });
+      await errorLocator.waitFor({ timeout: 500 });
       errorMsg = (await errorLocator.textContent()) || '';
     } catch {
       errorMsg = '';
@@ -164,14 +176,23 @@ export class CompleteApplicationPage {
     return options;
   }
 
-  // 11. Select random option for identityTypeDropdown
-  async selectRandomIdentityTypeOption() {
-    const options = await this.identityTypeDropdown.locator('option').all();
-    if (options.length === 0) throw new Error('No options found in identityTypeDropdown');
-    const randomIndex = Math.floor(Math.random() * options.length);
-    const value = await options[randomIndex].getAttribute('value');
-    await this.identityTypeDropdown.selectOption(value || '');
-    console.log('Randomly selected identity type:', await options[randomIndex].textContent());
+  // 11. Select identity type from dropdown by parameter
+  async selectIdentityType(identityType: string) {
+    await this.identityTypeDropdown.selectOption({ label: identityType });
+    console.log(`Selected identity type: ${identityType}`);
+  }
+
+  // Fill either PAN or Aadhar number field based on ID type
+  async aadharOrPan(ID: string, idValue: string) {
+    if (ID === 'Pan Card') {
+      await this.panNumberInput.fill(idValue);
+      console.log(`Filled PAN Number with: ${idValue}`);
+    } else if (ID === 'Aadhar Card') {
+      await this.aadharNumberInput.fill(idValue);
+      console.log(`Filled Aadhar Number with: ${idValue}`);
+    } else {
+      throw new Error(`Unknown ID type: ${ID}`);
+    }
   }
 
   // 12. Display options in genderDropdown
@@ -181,15 +202,10 @@ export class CompleteApplicationPage {
     return options;
   }
 
-  // 13. Select random option for genderDropdown
-  async selectRandomGenderOption() {
-    const options = await this.genderDropdown.locator('option').all();
-    if (options.length <= 1) throw new Error('Not enough options to select a random gender (excluding first option)');
-    // Exclude the first option (usually a placeholder like 'Select...')
-    const randomIndex = Math.floor(Math.random() * (options.length - 1)) + 1;
-    const value = await options[randomIndex].getAttribute('value');
-    await this.genderDropdown.selectOption(value || '');
-    console.log('Randomly selected gender (not first option):', await options[randomIndex].textContent());
+  // 13. Select gender from dropdown by parameter
+  async selectGender(gender: string) {
+    await this.genderDropdown.selectOption({ label: gender });
+    console.log(`Selected gender: ${gender}`);
   }
 
   // 14. Display options in nationalityDropdown
@@ -199,10 +215,10 @@ export class CompleteApplicationPage {
     return options;
   }
 
-  // 15. Select "Indian" from nationalityDropdown
-  async selectIndianNationality() {
-    await this.nationalityDropdown.selectOption({ label: 'Indian' });
-    console.log('Selected nationality: Indian');
+  // 15. Select nationality from dropdown by parameter
+  async selectNationality(nationality: string) {
+    await this.nationalityDropdown.selectOption({ label: nationality });
+    console.log(`Selected nationality: ${nationality}`);
   }
 
   // 16. Enter random 8 digits in mobileNumberInput and check validation
@@ -261,12 +277,6 @@ export class CompleteApplicationPage {
     console.log('Selected address result:', resultText);
   }
 
-  // 19. Clear the selected Address and validate the error message
-  async clearAddressAndCheckValidation() {
-    await this.addressInput.fill('');
-    // Try to blur the field to trigger validation
-    await this.completeApplicationHeader.click();
-  }
 
   // 20. Click Previous button
   async clickPreviousButton() {
@@ -282,39 +292,6 @@ export class CompleteApplicationPage {
     console.log('Clicked Next button');
   }
 
-  // 22. Click Next button and save data to JSON
-  async clickNext2() {
-    // Using static data for demonstration (replace with actual field reads as needed)
-    const salutation = "Mr";
-    const name = "Diablo sama";
-    const dateOfBirth = '01/01/1990';
-    const identityType = "Aadhar Card";
-    let aadharNumber = '123412341234';
-    let panNumber = 'abcxyz12121';
-    const mobileNumber = '9885123123';
-    const gender = "Primordial";
-    const nationality = "Tensura";
-    const address = "Slime datta ken no Tensei";
-
-    // Write to JSON file
-    const fs = require('fs');
-    const path = require('path');
-    const jsonPath = path.resolve('ApplicationData.json');
-    const data = {
-      Salutation: salutation,
-      Name: name,
-      "Date of Birth": dateOfBirth,
-      "Identity Type": identityType,
-      "Aadhar Number": aadharNumber,
-      "Pan Number": panNumber,
-      "Mobile Number": mobileNumber,
-      Gender: gender,
-      Nationality: nationality,
-      Address: address
-    };
-    fs.writeFileSync(jsonPath, JSON.stringify(data, null, 2), 'utf-8');
-    console.log('Saved form data to ApplicationData.json:', data);
-  }
 
   // Fill form fields with values from ApplicationFillData.json
   async fillFormFromJson() {
@@ -324,27 +301,28 @@ export class CompleteApplicationPage {
     if (fs.existsSync(jsonPath)) {
       const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
       await this.salutationDropdown.scrollIntoViewIfNeeded();
-      if (data.Salutation) await this.salutationDropdown.selectOption({ label: data.Salutation });
+      if (data.Salutation) await this.selectSalutationOption(data.Salutation);
       if (data.Name) await this.nameInput.fill(data.Name);
       if (data['Date of Birth']) 
-      {
-        await this.dateOfBirthInput.press('0');
-        await this.dateOfBirthInput.press('1');
-        await this.dateOfBirthInput.press('0');
-        await this.dateOfBirthInput.press('1');
-        await this.dateOfBirthInput.press('1');
-        await this.dateOfBirthInput.press('9');
-        await this.dateOfBirthInput.press('8');
-        await this.dateOfBirthInput.press('0');
-        await this.page.waitForTimeout(500);
-      }
+        {
+          const date= data['Date of Birth'];
+            await this.enterPastDateOfBirth(date);
+        }
       if (data['Identity Type']) await this.identityTypeDropdown.selectOption({ label: data['Identity Type'] });
-      if (data['Email Address']) await this.emailInput.fill(data['Email Address']);
-      if (data.Gender) await this.genderDropdown.selectOption({ label: data.Gender });
-      await this.page.waitForTimeout(3000);
+      if (data['Identity Type']=== 'Aadhar Card')
+        if (data['Aadhar Number']) await this.aadharNumberInput.fill(data['Aadhar Number']);
+      if (data['Identity Type']=== 'Pan Card')
+        if (data['Pan Number']) await this.panNumberInput.fill(data['Pan Number']);
+      if (data['Email Address']) 
+        {
+          const email = data['Email Address'];
+          await this.enterValidEmailAndCheck(email);
+        }
+      await this.page.waitForTimeout(1000);
       await this.mobileNumberInput.scrollIntoViewIfNeeded();
       if (data['Mobile Number']) await this.mobileNumberInput.fill(data['Mobile Number']);
       await this.page.waitForTimeout(1000);
+      if (data.Gender) await this.genderDropdown.selectOption({ label: data.Gender });
       if (data.Nationality) await this.nationalityDropdown.selectOption({ label: data.Nationality });
       await this.page.waitForTimeout(1000);
       if (data.Address) await this.addressInput.fill(data.Address);

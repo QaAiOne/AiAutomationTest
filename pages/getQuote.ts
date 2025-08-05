@@ -1,6 +1,8 @@
 import { Page, Locator } from '@playwright/test';
 
 export class GetQuotePage {
+
+  
   // Adults controls (Family)
   readonly adultsMinusButton: Locator;
   readonly adultsPlusButton: Locator;
@@ -47,45 +49,6 @@ export class GetQuotePage {
   readonly getQuoteButton: Locator;
   readonly nextButton: Locator;
 
-
-  // Fetch and display the color of the circles in the step display bar
-  async logStepCircleColors() {
-    // Log the color of each stepper circle using explicit locators
-    const steps = [
-      { name: 'Get Quote', locator: this.getQuoteCircle },
-      { name: 'Complete Application', locator: this.completeApplicationCircle },
-      { name: 'Summary Page', locator: this.summaryPageCircle },
-      { name: 'Payment Amount', locator: this.paymentAmountCircle },
-    ];
-    let lastSelectedStep: string | null = null;
-    for (const step of steps) {
-      try {
-        const handle = await step.locator.elementHandle();
-        if (handle) {
-          const color = await handle.evaluate(el => {
-            const style = window.getComputedStyle(el as Element);
-            return style.backgroundColor || style.borderColor;
-          });
-          let selectedMsg = '';
-          if (color === 'rgba(0, 0, 0, 0)') {
-            lastSelectedStep = step.name;
-            selectedMsg = ' (SELECTED)';
-          }
-          console.log(`Step circle for '${step.name}' color:`, color + selectedMsg);
-        } else {
-          console.log(`Step circle for '${step.name}' not found.`);
-        }
-      } catch (err) {
-        console.log(`Error fetching color for '${step.name}':`, err?.message || err);
-      }
-    }
-    if (lastSelectedStep) {
-      console.log(`Name of the last selected circle: ${lastSelectedStep}`);
-    } else {
-      console.log('No step is currently selected (no circle with rgba(0, 0, 0, 0) color).');
-    }
-  }
-
   constructor(page: Page) {
     this.page = page;
     // Progress indicator/stepper (not interactable)
@@ -101,12 +64,7 @@ export class GetQuotePage {
     this.valueCardSelectButton = page.locator('#btnBasic span');
     this.plusCardSelectButton = page.locator('#btnEssential span');
     this.proCardSelectButton = page.locator('#btnPreffered span');
-    /*
-    this.valueCardSelectButton = this.valueCard.locator('.//button[@id="btnBasic"]//span');
-    this.plusCardSelectButton = this.plusCard.locator('.//button[@id="btnEssential"]//span');
-    this.proCardSelectButton = this.proCard.locator('.//button[@id="btnPreffered"]//span');
-    */
-
+    
     // Main page elements (from actual UI)
     //this.travelInsurancePlanHeader = page.locator('//h2[contains(text(), "Travel Insurance Plan")]');
     this.travelInsurancePlanHeader = page.locator('//*[text()="Travel Insurance Plan"]');
@@ -160,39 +118,11 @@ export class GetQuotePage {
     }
   }
 
-  // Check if Get Quote button is hidden
-  async isGetQuoteButtonHidden() {
-    // Check if Get Quote button is not visible
-    return (await this.getQuoteButton.isHidden());
-  }
-
-  // Check if results cards are visible
-  async areResultsCardsVisible() {
-    // Check if all three card titles are visible
-    const valueVisible = await this.valueCard.isVisible();
-    console.log('Value card visible:', valueVisible);
-    const plusVisible = await this.plusCard.isVisible();
-    console.log('Plus card visible:', plusVisible);
-    const proVisible = await this.proCard.isVisible();
-    console.log('Pro card visible:', proVisible);
-    return valueVisible && plusVisible && proVisible;
-  }
-
-  // Select a card by title ("Value", "Plus", "Pro")
-  async selectCardByTitle(title: 'Value' | 'Plus' | 'Pro') {
-    let cardButton;
-    if (title === 'Value') cardButton = this.valueCardSelectButton;
-    else if (title === 'Plus') cardButton = this.plusCardSelectButton;
-    else cardButton = this.proCardSelectButton;
-    await cardButton.scrollIntoViewIfNeeded();
-    await cardButton.click();
-  }
-
   // 2. Increase No of Adults (Family)
   async increaseAdults(count: number) {
     for (let i = 0; i < count; i++) {
       await this.adultsPlusButton.click();
-      console.log('Clicked Increase Adults button'+(i+1));
+      console.log('Clicked Increase Adults button '+(i+1));
     }
   }
   // 2. Decrease No of Adults (Family, cannot go below 1)
@@ -291,30 +221,103 @@ export class GetQuotePage {
     console.log('Waited 3 seconds after clicking Next button');
   }
   
-  /**
-   * Finds and returns the first stepper circle element with color #0F2E4E (rgb(15, 46, 78)).
-   * Returns the locator if found, otherwise null.
-   */
-  async getCircleWithColor0F2E4E(): Promise<Locator | null> {
-    // #0F2E4E in rgb is rgb(15, 46, 78)
+  // Fetch and display the color of the circles in the step display bar
+  async logStepCircleColors() {
+    // Log the color of each stepper circle using explicit locators
     const steps = [
-      this.getQuoteCircle,
-      this.completeApplicationCircle,
-      this.summaryPageCircle,
-      this.paymentAmountCircle
+      { name: 'Get Quote', locator: this.getQuoteCircle },
+      { name: 'Complete Application', locator: this.completeApplicationCircle },
+      { name: 'Summary Page', locator: this.summaryPageCircle },
+      { name: 'Payment Amount', locator: this.paymentAmountCircle },
     ];
-    for (const locator of steps) {
-      const handle = await locator.elementHandle();
-      if (handle) {
-        const color = await handle.evaluate(el => {
-          const style = window.getComputedStyle(el as Element);
-          console.log('Style is: '+style);          return style.backgroundColor || style.borderColor;
-        });
-        if (color === 'rgb(15, 46, 78)') {
-          return locator;
+    let lastSelectedStep: string | null = null;
+    for (const step of steps) {
+      try {
+        const handle = await step.locator.elementHandle();
+        if (handle) {
+          const color = await handle.evaluate(el => {
+            const style = window.getComputedStyle(el as Element);
+            return style.backgroundColor || style.borderColor;
+          });
+          let selectedMsg = '';
+          if (color === 'rgba(0, 0, 0, 0)') {
+            lastSelectedStep = step.name;
+            selectedMsg = ' (SELECTED)';
+          }
+          console.log(`Step circle for '${step.name}' color:`, color + selectedMsg);
+        } else {
+          console.log(`Step circle for '${step.name}' not found.`);
         }
+      } catch (err) {
+        console.log(`Error fetching color for '${step.name}':`, err?.message || err);
       }
     }
-    return null;
+    if (lastSelectedStep) {
+      console.log(`Name of the last selected circle: ${lastSelectedStep}`);
+    } else {
+      console.log('No step is currently selected (no circle with rgba(0, 0, 0, 0) color).');
+    }
   }
+
+
+  // Check if Get Quote button is hidden
+  async isGetQuoteButtonHidden() {
+    // Check if Get Quote button is not visible
+    return (await this.getQuoteButton.isHidden());
+  }
+
+  // Check if results cards are visible
+  async areResultsCardsVisible() {
+    // Check if all three card titles are visible
+    const valueVisible = await this.valueCard.isVisible();
+    console.log('Value card visible:', valueVisible);
+    const plusVisible = await this.plusCard.isVisible();
+    console.log('Plus card visible:', plusVisible);
+    const proVisible = await this.proCard.isVisible();
+    console.log('Pro card visible:', proVisible);
+    return valueVisible && plusVisible && proVisible;
+  }
+
+  // Select a card by title ("Value", "Plus", "Pro")
+  async selectCardByTitle(title: 'Value' | 'Plus' | 'Pro') {
+    let cardButton;
+    if (title === 'Value') cardButton = this.valueCardSelectButton;
+    else if (title === 'Plus') cardButton = this.plusCardSelectButton;
+    else cardButton = this.proCardSelectButton;
+    await cardButton.scrollIntoViewIfNeeded();
+    await cardButton.click();
+  }
+
+  // Fill Get Quote form fields from ApplicationFillData.json
+  async fillGetQuoteFormFromJson() {
+    const fs = require('fs');
+    const path = require('path');
+    const jsonPath = path.resolve('ApplicationFillData.json');
+    if (fs.existsSync(jsonPath)) {
+      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+      if (data['Trip Type']) await this.selectTripType(data['Trip Type']);
+      if (data['Travel Type']) await this.selectTravelType(data['Travel Type']);
+      if (data['Travel Type'] === 'Family') {
+      if (data['No of Adults']) await this.increaseAdults(Number(data['No of Adults']) - 1); // assuming default is 1
+      if (data['No of Children']) await this.increaseChildren(Number(data['No of Children']));
+      }
+      else 
+      {
+        if (data['No of Individuals']) await this.increaseIndividuals(Number(data['No of Individuals']) - 1); 
+      }
+      if (data['Area']) await this.areaDropdown.selectOption({ label: data['Area'] });
+      if (data['Start Date'] && data['End Date']) await this.selectDates(data['Start Date'], data['End Date']);
+      await this.getQuoteButton.scrollIntoViewIfNeeded();
+      await this.clickGetQuote();
+      if (data['Insurance Plan']) 
+        {
+          await this.valueCard.scrollIntoViewIfNeeded();
+          await this.selectCardByTitle(data['Insurance Plan']);
+      console.log('Filled Get Quote form fields from ApplicationFillData.json');
+        } else {
+      console.log('ApplicationFillData.json file not found.');
+       }
+       await this.clickNext();
+  }
+}
 }
