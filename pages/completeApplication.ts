@@ -110,6 +110,8 @@ export class CompleteApplicationPage {
   async enterPastDateOfBirth(date: string = '01/01/1990') {
     await this.dateOfBirthInput.fill(date);
     console.log('Entered past date of birth:', date);
+    await this.page.keyboard.press('Escape');  
+    await this.page.waitForTimeout(500);  
   }
 
   // 8. Validate emailInput field with invalid and empty input
