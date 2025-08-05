@@ -57,7 +57,7 @@ export class GetQuotePage {
       { name: 'Summary Page', locator: this.summaryPageCircle },
       { name: 'Payment Amount', locator: this.paymentAmountCircle },
     ];
-    let selectedStep: string | null = null;
+    let lastSelectedStep: string | null = null;
     for (const step of steps) {
       try {
         const handle = await step.locator.elementHandle();
@@ -68,7 +68,7 @@ export class GetQuotePage {
           });
           let selectedMsg = '';
           if (color === 'rgba(0, 0, 0, 0)') {
-            selectedStep = step.name;
+            lastSelectedStep = step.name;
             selectedMsg = ' (SELECTED)';
           }
           console.log(`Step circle for '${step.name}' color:`, color + selectedMsg);
@@ -79,8 +79,8 @@ export class GetQuotePage {
         console.log(`Error fetching color for '${step.name}':`, err?.message || err);
       }
     }
-    if (selectedStep) {
-      console.log(`Selected step: ${selectedStep}`);
+    if (lastSelectedStep) {
+      console.log(`Name of the last selected circle: ${lastSelectedStep}`);
     } else {
       console.log('No step is currently selected (no circle with rgba(0, 0, 0, 0) color).');
     }
