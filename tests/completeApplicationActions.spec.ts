@@ -103,10 +103,10 @@ test.describe('Complete Application - All Functions Validation', () => {
     // 11. Select random identity type
     await completeAppPage.identityTypeDropdown.scrollIntoViewIfNeeded();
     try {
-      await completeAppPage.selectRandomIdentityTypeOption();
-      console.log('11. selectRandomIdentityTypeOption completed');
+      await completeAppPage.selectIdentityType('Pan Card');
+      console.log('11. Pan Card selection as Identity Type completed');
     } catch (e) {
-      console.log('11. selectRandomIdentityTypeOption failed:', e);
+      console.log('11. Pan Card selection as Identity Type failed:', e);
     }
     
     // 12. Log gender options
@@ -121,10 +121,10 @@ test.describe('Complete Application - All Functions Validation', () => {
     // 13. Select random gender (not first)
     await completeAppPage.genderDropdown.scrollIntoViewIfNeeded();
     try {
-      await completeAppPage.selectRandomGenderOption();
-      console.log('13. selectRandomGenderOption completed');
+      await completeAppPage.selectGender('Female');
+      console.log('13. selecting a Gender - completed');
     } catch (e) {
-      console.log('13. selectRandomGenderOption failed:', e);
+      console.log('13. selecting a Gender - failed:', e);
     }
     await page.waitForTimeout(1000);
     // 14. Log nationality options
@@ -139,10 +139,10 @@ test.describe('Complete Application - All Functions Validation', () => {
     // 15. Select 'Indian' nationality
     await completeAppPage.nationalityDropdown.scrollIntoViewIfNeeded();
     try {
-      await completeAppPage.selectIndianNationality();
-      console.log('15. selectIndianNationality completed');
+      await completeAppPage.selectNationality('Indian');
+      console.log('15. select Nationality as Indian- completed');
     } catch (e) {
-      console.log('15. selectIndianNationality failed:', e);
+      console.log('15. select Nationality as Indian- failed:', e);
     }
     await page.waitForTimeout(1000);
     // 16. Enter random 8 digits in mobile and check validation
@@ -172,15 +172,7 @@ test.describe('Complete Application - All Functions Validation', () => {
       console.log('18. searchAndSelectAddress failed:', e);
     }
     await page.waitForTimeout(1000);
-    // 19. Clear address and check validation
-    await completeAppPage.addressInput.scrollIntoViewIfNeeded();
-    try {
-      await completeAppPage.clearAddressAndCheckValidation();
-      console.log('19. clearAddressAndCheckValidation completed');
-    } catch (e) {
-      console.log('19. clearAddressAndCheckValidation failed:', e);
-    }
-    await page.waitForTimeout(1000);
+   
     // 20. Click Previous button
     try {
       await completeAppPage.clickPreviousButton();

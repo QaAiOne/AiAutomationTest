@@ -2,27 +2,7 @@ import { Page, Locator } from '@playwright/test';
 
 export class PaymentAmountPage {
 
-  // Fill payment form fields from ApplicationFillData.json
-  async fillPaymentFormFromJson() {
-    const fs = require('fs');
-    const path = require('path');
-    const jsonPath = path.resolve('ApplicationFillData.json');
-    if (fs.existsSync(jsonPath)) {
-      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
-      if (data['Insurance Plan']) await this.validatePaymentAmount(data['Insurance Plan']);
-      if (data['Card type']) await this.selectCardType(data['Card type']);
-      if (data['Name']) await this.setNameOnCard(data['Name']);
-      if (data['Card Number']) await this.setCardNumber(data['Card Number']);
-      if (data['Security Code']) await this.setSecurityCode(data['Security Code']);
-      if (data['Expiration Month']) await this.selectExpirationMonth(data['Expiration Month']);
-      if (data['Expiration Year']) await this.setExpirationYear(data['Expiration Year']);
-      if (data['Zip Code']) await this.setZipcode(data['Zip Code']);
-      console.log('Filled payment form fields from ApplicationFillData.json');
-    } else {
-      console.log('ApplicationFillData.json file not found.');
-    }
-  }
-
+  
   readonly page: Page;
   readonly paymentAmount: Locator;
   readonly cardTypeDropdown: Locator;
@@ -35,6 +15,7 @@ export class PaymentAmountPage {
   readonly agreeCheckbox: Locator;
   readonly submitButton: Locator;
   readonly previousButton: Locator;
+
 
   constructor(page: Page) {
     this.page = page;
@@ -111,5 +92,45 @@ export class PaymentAmountPage {
     console.log(`Set Zip Code to: ${zip}`);
   }
 
-
+  // 9. Click Agree Checkbox
+  async clickAgreeCheckbox() {
+    await this.agreeCheckbox.check();
+    console.log('Clicked Agree Checkbox');
   }
+
+  // 10. Click Submit Button
+  async clickSubmitButton() {
+    await this.submitButton.click();
+    console.log('Clicked Submit Button');
+  }
+
+  // 11. Click Previous Button
+  async clickPreviousButton() {
+    await this.previousButton.click();
+    console.log('Clicked Previous Button');
+  }
+
+  /// Fill payment form fields from ApplicationFillData.json
+  async fillPaymentFormFromJson() {
+    const fs = require('fs');
+    const path = require('path');
+    const jsonPath = path.resolve('ApplicationFillData.json');
+    if (fs.existsSync(jsonPath)) {
+      const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
+      if (data['Insurance Plan']) await this.validatePaymentAmount(data['Insurance Plan']);
+      if (data['Card type']) await this.selectCardType(data['Card type']);
+      if (data['Name']) await this.setNameOnCard(data['Name']);
+      if (data['Card Number']) await this.setCardNumber(data['Card Number']);
+      if (data['Security Code']) await this.setSecurityCode(data['Security Code']);
+      if (data['Expiration Month']) await this.selectExpirationMonth(data['Expiration Month']);
+      if (data['Expiration Year']) await this.setExpirationYear(data['Expiration Year']);
+      if (data['Zip Code']) await this.setZipcode(data['Zip Code']);
+      console.log('Filled payment form fields from ApplicationFillData.json');
+      await this.clickAgreeCheckbox();
+      await this.clickSubmitButton();
+    } else {
+      console.log('ApplicationFillData.json file not found.');
+    }
+  }
+
+}

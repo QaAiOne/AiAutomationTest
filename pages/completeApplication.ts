@@ -1,6 +1,7 @@
 import { Page, Locator, expect } from '@playwright/test';
 
 export class CompleteApplicationPage {
+
   readonly page: Page;
   // Example locators for Complete Application page elements
   readonly completeApplicationHeader: Locator;
@@ -61,6 +62,12 @@ export class CompleteApplicationPage {
   async selectSalutationOption(salutation: string) {
     await this.salutationDropdown.selectOption({ label: salutation });
     console.log('Selected salutation:', salutation);
+  }
+
+   // Enter value in name field
+  async enterName(name: string) {
+    await this.nameInput.fill(name);
+    console.log(`Entered name: ${name}`);
   }
 
   // 4. Function for entering random text in nameInput field, validate only characters allowed
@@ -169,14 +176,23 @@ export class CompleteApplicationPage {
     return options;
   }
 
-  // 11. Select random option for identityTypeDropdown
-  async selectRandomIdentityTypeOption() {
-    const options = await this.identityTypeDropdown.locator('option').all();
-    if (options.length === 0) throw new Error('No options found in identityTypeDropdown');
-    const randomIndex = Math.floor(Math.random() * options.length);
-    const value = await options[randomIndex].getAttribute('value');
-    await this.identityTypeDropdown.selectOption(value || '');
-    console.log('Randomly selected identity type:', await options[randomIndex].textContent());
+  // 11. Select identity type from dropdown by parameter
+  async selectIdentityType(identityType: string) {
+    await this.identityTypeDropdown.selectOption({ label: identityType });
+    console.log(`Selected identity type: ${identityType}`);
+  }
+
+  // Fill either PAN or Aadhar number field based on ID type
+  async aadharOrPan(ID: string, idValue: string) {
+    if (ID === 'Pan Card') {
+      await this.panNumberInput.fill(idValue);
+      console.log(`Filled PAN Number with: ${idValue}`);
+    } else if (ID === 'Aadhar Card') {
+      await this.aadharNumberInput.fill(idValue);
+      console.log(`Filled Aadhar Number with: ${idValue}`);
+    } else {
+      throw new Error(`Unknown ID type: ${ID}`);
+    }
   }
 
   // 12. Display options in genderDropdown
@@ -186,15 +202,10 @@ export class CompleteApplicationPage {
     return options;
   }
 
-  // 13. Select random option for genderDropdown
-  async selectRandomGenderOption() {
-    const options = await this.genderDropdown.locator('option').all();
-    if (options.length <= 1) throw new Error('Not enough options to select a random gender (excluding first option)');
-    // Exclude the first option (usually a placeholder like 'Select...')
-    const randomIndex = Math.floor(Math.random() * (options.length - 1)) + 1;
-    const value = await options[randomIndex].getAttribute('value');
-    await this.genderDropdown.selectOption(value || '');
-    console.log('Randomly selected gender (not first option):', await options[randomIndex].textContent());
+  // 13. Select gender from dropdown by parameter
+  async selectGender(gender: string) {
+    await this.genderDropdown.selectOption({ label: gender });
+    console.log(`Selected gender: ${gender}`);
   }
 
   // 14. Display options in nationalityDropdown
@@ -204,10 +215,10 @@ export class CompleteApplicationPage {
     return options;
   }
 
-  // 15. Select "Indian" from nationalityDropdown
-  async selectIndianNationality() {
-    await this.nationalityDropdown.selectOption({ label: 'Indian' });
-    console.log('Selected nationality: Indian');
+  // 15. Select nationality from dropdown by parameter
+  async selectNationality(nationality: string) {
+    await this.nationalityDropdown.selectOption({ label: nationality });
+    console.log(`Selected nationality: ${nationality}`);
   }
 
   // 16. Enter random 8 digits in mobileNumberInput and check validation
@@ -266,12 +277,6 @@ export class CompleteApplicationPage {
     console.log('Selected address result:', resultText);
   }
 
-  // 19. Clear the selected Address and validate the error message
-  async clearAddressAndCheckValidation() {
-    await this.addressInput.fill('');
-    // Try to blur the field to trigger validation
-    await this.completeApplicationHeader.click();
-  }
 
   // 20. Click Previous button
   async clickPreviousButton() {
