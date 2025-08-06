@@ -1,0 +1,60 @@
+Waited 3 seconds after clicking Next button
+Salutation options: [ '', 'Mr', 'Mrs', 'Ms', 'Prefer not to disclose' ]
+1. logSalutationOptions completed
+Randomly selected salutation (not first option): Mr
+2. selectRandomSalutationOption completed
+Selected salutation: Mr
+3. selectSalutationOption completed
+Name input validation: All characters are allowed. Entered value:
+ TestName695!@#
+4. enterRandomNameText completed
+Name input validation error:
+ This field is required
+5. clearNameInputAndCheckValidation completed
+Date of Birth validation error:
+  This field is required 
+6. checkDateOfBirthValidationOnBlur completed
+Entered past date of birth: 01/01/1990
+7. enterPastDateOfBirth completed
+Email input validation error (invalid):
+  Email Address must be a valid email 
+Email input validation error (empty):
+  This field is required 
+8. validateEmailInputWithInvalidAndEmpty completed
+No validation error for valid email:
+ test@example.com
+9. enterValidEmailAndCheck completed
+Identity Type options: [ '', ' Aadhar Card', 'Pan Card' ]
+10. logIdentityTypeOptions completed
+Selected identity type: Pan Card
+11. Pan Card selection as Identity Type completed
+Gender options: [ '', 'Female', 'Male' ]
+12. logGenderOptions completed
+Selected gender: Female
+13. selecting a Gender - completed
+Nationality options: [
+  '',
+  'Indian',
+  'South Korean',
+  'Australian',
+  'American',
+  'North Korean',
+  ''
+]
+14. logNationalityOptions completed
+Selected nationality: Indian
+15. select Nationality as Indian- completed
+Mobile number validation error (8 digits):
+  Mobile Number must be a valid mask 
+Mobile number validation error (empty):
+  Mobile Number must be a valid mask 
+16. enterRandomMobileAndCheckValidation completed
+Validation error displayed for valid mobile number:
+  Mobile Number is required 
+17. enterMobileNumberAndCheck completed
+Selected address result: New York, NY, USA
+18. searchAndSelectAddress completed
+Clicked Previous button
+20. clickPreviousButton completed
+Clicked Next button
+21. clickNextButton completed

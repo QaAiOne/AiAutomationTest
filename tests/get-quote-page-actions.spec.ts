@@ -1,6 +1,7 @@
 import { test as base, expect, chromium, Page } from '@playwright/test';
 import { GetQuotePage } from '../pages/getQuote';
 
+
 const BASE_URL = 'https://trainingx.unqork.io/#/display/67545b82c5a4314c973256aa';
 
 const test = base.extend<{ page: Page }>({

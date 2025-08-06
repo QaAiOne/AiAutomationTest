@@ -1,0 +1,51 @@
+Navigated to URL
+Body loaded.
+Selected Trip Type: Single Trip
+Scrolled to Travel Type Individual
+Selected Travel Type: Individual
+Increased Individuals by 2
+Decreased Individuals by 1
+Scrolled to Travel Type for Family
+Scrolled to Travel Type and selected Family
+Clicked Increase Adults button 1
+Increased Adults to 2
+Decreased Adults by 1
+Increased Children by 2
+Decreased Children by 1
+Children controls hidden for Individual travel type
+Area dropdown options: [
+  '',
+  'Mumbai',
+  'New Delhi',
+  'Hyderabad',
+  'Kolkata',
+  'Chennai',
+  'Pune',
+  'Amritsar',
+  'Shimla',
+  'Srinagar',
+  'Chandigarh',
+  'Ahmedabad',
+  'Jaipur',
+  'Thiruvananthapuram'
+]
+Logged Area dropdown options
+Selected Start and End Date
+Randomly selected area option index: 3 value: string:Hyderabad
+Selected random Area option
+Clicked Get Quote button
+Value card visible: true
+Plus card visible: true
+Pro card visible: true
+Results cards are visible
+Value card Select button text is correct
+Plus card Select button text is correct
+Pro card Select button text is correct
+Plus card Select button text changed to Selected
+Waited 3 seconds after clicking Next button
+Clicked Next button
+Step circle for 'Get Quote' color: rgba(0, 0, 0, 0) (SELECTED)
+Step circle for 'Complete Application' color: rgba(0, 0, 0, 0) (SELECTED)
+Step circle for 'Summary Page' color: rgb(255, 255, 255)
+Step circle for 'Payment Amount' color: rgb(255, 255, 255)
+Name of the last selected circle: Complete Application

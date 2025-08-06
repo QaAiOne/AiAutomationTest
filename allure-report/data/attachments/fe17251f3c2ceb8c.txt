@@ -1,0 +1,9 @@
+Filled Get Quote form fields from ApplicationFillData.json
+Waited 3 seconds after clicking Next button
+Step circle for 'Get Quote' color: rgba(0, 0, 0, 0) (SELECTED)
+Step circle for 'Complete Application' color: rgba(0, 0, 0, 0) (SELECTED)
+Step circle for 'Summary Page' color: rgb(255, 255, 255)
+Step circle for 'Payment Amount' color: rgb(255, 255, 255)
+Name of the last selected circle: Complete Application
+Selected salutation: Mr
+Entered past date of birth: 01/01/1980
