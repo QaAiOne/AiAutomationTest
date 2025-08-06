@@ -1,0 +1,29 @@
+Filled Get Quote form fields from ApplicationFillData.json
+Waited 3 seconds after clicking Next button
+Step circle for 'Get Quote' color: rgba(0, 0, 0, 0) (SELECTED)
+Step circle for 'Complete Application' color: rgba(0, 0, 0, 0) (SELECTED)
+Step circle for 'Summary Page' color: rgb(255, 255, 255)
+Step circle for 'Payment Amount' color: rgb(255, 255, 255)
+Name of the last selected circle: Complete Application
+Selected salutation: Mr
+Entered past date of birth: 01/01/1980
+No validation error for valid email:
+ veldora@tempest.com
+Filled form fields from ApplicationFillData.json
+Clicked Next button on Complete Application page
+Paused 2s after clickNextButton: 1:08:25 PM
+ApplicationData.json file not found.
+Paused 2s after getSummaryInfo: 1:08:27 PM
+Clicked Next button on Summary page
+Payment amount for Value is correct: 10,000
+Card value: Credit Card
+Selected card type: Credit Card
+Set Name on Card: Veldora
+Set Card Number: 1234567890123456
+Set Security Code: 32
+Selected Expiration Month: 06
+Set Expiration Year: 27
+Set Zip Code to: 65412
+Filled payment form fields from ApplicationFillData.json
+Clicked Agree Checkbox
+Clicked Submit Button

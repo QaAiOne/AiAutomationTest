@@ -1,0 +1,59 @@
+# Page snapshot
+
+```yaml
+- text: "Preview as:"
+- combobox "Preview as:":
+  - option [selected]
+- text: "Preview Style:"
+- combobox "Preview Style:":
+  - option [selected]
+- button "Remove Preview Bar": Remove
+- banner
+- main:
+  - heading "Travel Insurance Plan" [level=2]
+  - alert
+  - navigation "Navigation nav":
+    - list:
+      - listitem "Get Quote"
+      - listitem "Complete Application"
+      - listitem "Summary Page"
+      - listitem "Payment Amount"
+  - text: Payment Amount *
+  - textbox "Payment Amount" [disabled]: 10,000
+  - text: Card type accepted *
+  - combobox "Card type accepted":
+    - option [disabled]
+    - option "Credit Card" [selected]
+    - option "Debit Card"
+  - text: Name on card *
+  - textbox "Name on card": Veldora
+  - text: Expiration Month *
+  - combobox "Expiration Month":
+    - option [disabled]
+    - option "01"
+    - option "02"
+    - option "03"
+    - option "04"
+    - option "05"
+    - option "06" [selected]
+    - option "07"
+    - option "08"
+    - option "09"
+    - option "10"
+    - option "11"
+    - option "12"
+  - text: Card Number *
+  - textbox "Card Number": "1234567890123456"
+  - text: Expiration Year *
+  - textbox "Expiration Year": "27"
+  - text: Security Code *
+  - textbox "Security Code": "32"
+  - text: Zip Code *
+  - textbox "Zip Code": "65412"
+  - text: I agree to the terms and conditions
+  - checkbox "I agree to the terms and conditions" [checked]
+  - text: "*"
+  - button "Submit"
+  - button "Previous"
+- contentinfo
+```
