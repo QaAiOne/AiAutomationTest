@@ -3,7 +3,7 @@ import { test, expect } from '@playwright/test';
 import { CompleteApplicationPage } from '../pages/completeApplication';
 import { GetQuotePage } from '../pages/getQuote';
 
-test.describe('Complete Flow Demo', () => {
+test.describe('Complete Flow Demo', { tag: '@demo' }, () => {
   test('Complete end-end flow 1', async ({ page }) => {
     // Go to Get Quote page (landing page)
     await page.goto('https://trainingx.unqork.io/#/display/67545b82c5a4314c973256aa');

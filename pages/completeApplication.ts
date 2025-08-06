@@ -297,7 +297,7 @@ export class CompleteApplicationPage {
   async fillFormFromJson() {
     const fs = require('fs');
     const path = require('path');
-    const jsonPath = path.resolve('ApplicationFillData.json');
+    const jsonPath = path.resolve('TestData/ApplicationFillData.json');
     if (fs.existsSync(jsonPath)) {
       const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
       await this.salutationDropdown.scrollIntoViewIfNeeded();

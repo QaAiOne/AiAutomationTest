@@ -114,7 +114,7 @@ export class PaymentAmountPage {
   async fillPaymentFormFromJson() {
     const fs = require('fs');
     const path = require('path');
-    const jsonPath = path.resolve('ApplicationFillData.json');
+    const jsonPath = path.resolve('TestData/ApplicationFillData.json');
     if (fs.existsSync(jsonPath)) {
       const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
       if (data['Insurance Plan']) await this.validatePaymentAmount(data['Insurance Plan']);
