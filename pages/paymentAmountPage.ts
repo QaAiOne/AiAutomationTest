@@ -70,7 +70,7 @@ export class PaymentAmountPage {
 
   // 5. Set Security Code
   async setSecurityCode(code: string) {
-    await this.securityCode.fill(code);
+    await this.securityCode.fill(code.trim());
     console.log(`Set Security Code: ${code}`);
   }
 

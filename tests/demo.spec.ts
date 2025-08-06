@@ -3,8 +3,8 @@ import { test, expect } from '@playwright/test';
 import { CompleteApplicationPage } from '../pages/completeApplication';
 import { GetQuotePage } from '../pages/getQuote';
 
-test.describe('Complete Application Demo', () => {
-  test('should navigate from Get Quote to Complete Application and validate salutation dropdown functions', async ({ page }) => {
+test.describe('Complete Flow Demo', () => {
+  test('Complete end-end flow 1', async ({ page }) => {
     // Go to Get Quote page (landing page)
     await page.goto('https://trainingx.unqork.io/#/display/67545b82c5a4314c973256aa');
     const getQuotePage = new GetQuotePage(page);
