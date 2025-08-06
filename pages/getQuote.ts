@@ -292,7 +292,7 @@ export class GetQuotePage {
   async fillGetQuoteFormFromJson() {
     const fs = require('fs');
     const path = require('path');
-    const jsonPath = path.resolve('ApplicationFillData.json');
+    const jsonPath = path.resolve('TestData/ApplicationFillData.json');
     if (fs.existsSync(jsonPath)) {
       const data = JSON.parse(fs.readFileSync(jsonPath, 'utf-8'));
       if (data['Trip Type']) await this.selectTripType(data['Trip Type']);

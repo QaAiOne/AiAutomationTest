@@ -13,7 +13,7 @@ const test = base.extend<{ page: Page }>({
   }
 });
 
-test.describe('Get Quote Page Actions', () => {
+test.describe('Get Quote Page Actions', { tag: '@sanity' }, () => {
   test('should perform all actions on Get Quote page', async ({ page }) => {
     test.setTimeout(60000); // Increase timeout to 60s
     const getQuotePage = new GetQuotePage(page);

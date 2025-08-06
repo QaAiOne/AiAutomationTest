@@ -4,7 +4,7 @@ import { GetQuotePage } from '../pages/getQuote';
 
 // This script validates all functions in CompleteApplicationPage
 
-test.describe('Complete Application - All Functions Validation', () => {
+test.describe('Complete Application - All Functions Validation',{ tag: '@sanity' }, () => {
   test('should validate all CompleteApplicationPage functions', async ({ page }) => {
     test.setTimeout(90000);
     await page.goto('https://trainingx.unqork.io/#/display/67545b82c5a4314c973256aa');
