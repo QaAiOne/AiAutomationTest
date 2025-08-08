@@ -7,3 +7,8 @@ Do run steps one by one using the tools provided by the Playwright MCP.
 Only after all steps are completed, emit a Playwright TypeScript test that uses @playwright/test based on message history
 Save generated test file in the respective directory.
 Execute the test file and iterate until the test passes.
+
+aria-label
+Booking for women, Know more
+
+//*[@id="root"]/div[3]/div/div[2]/div/div/div[2]/div/div[1]/div/div[1]
