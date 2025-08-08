@@ -35,8 +35,8 @@ export class CompleteApplicationPage {
     this.emailInput = page.locator('input#email');
     this.genderDropdown = page.locator('select#gender');
     this.addressInput = page.locator('input#react-select-2-input');
-    this.previousButton = page.locator('button#nav-prev-btn');
-    this.nextButton = page.locator('button#nav-next-btn');
+    this.previousButton = page.locator('//*[@id="nav-prev-btn"]');
+    this.nextButton = page.locator('//*[@id="nav-next-btn"]');
     this.saveAndExitButton = page.locator('button#nav-save-draft-btn');
   }
   
