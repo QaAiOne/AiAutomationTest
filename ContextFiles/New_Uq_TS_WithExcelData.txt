@@ -1,0 +1,42 @@
+Generate a testscript based for the below TestScenario
+
+TestScenario003: TryingWithXLData
+TestSteps:
+Fetch data from Excel sheet "Sheet1" and perform following actions
+1. Land on "Get Quote" page (url: https://trainingx.unqork.io/#/display/67545b82c5a4314c973256aa/689b2e662ed1753bef23c2b8/67545b82c5a4314c973256aa )
+2. Select one of the Annual Trip radio button
+3. Select radio button 
+4. Set No of Adults
+5. Set No of Children
+6. Set Start Date
+7. Set End Date
+8. Provide Area 
+9. Click on Get Quote button
+10. Select a Card (Insurance Plan) 
+11. Click on Next button, it will take you to Complete Application page
+
+Fetch data from Excel sheet "Sheet2" and continue to perform following actions
+12. In "Complete Application" page provide salution 
+13. Provide name 
+14. Date of Birth 
+15. Provide Email Address 
+16. Provide Identity type 
+17. Provide Aadhar Number 
+18. Provide mobile number 
+19. Select Gender 
+20. Provide Nationality 
+21. Provide address 
+22. Click on Next, this will take us to Summary Page
+23. Click on Next button in "Summary Page", this will take you to "Payment Amount" page
+
+Fetch data from Excel sheet "Sheet3" and continue to perform following actions
+24. Select card type accepted
+25. Provide Name on card
+26. Provide Card Number
+27. Provide Security Code
+28. Provide Expiration Month
+29. Provide Expiration Year
+30. Provide Zipcode
+31. Click on Submit button
+
+Excel Workbook "TestData001"

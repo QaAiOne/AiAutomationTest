@@ -1,0 +1,34 @@
+TestScenario002: Plan a trip for Family and make payment with Credit Card
+TestSteps:
+1. Land on "Get Quote" page (url: https://trainingx.unqork.io/#/display/67545b82c5a4314c973256aa/689b2e662ed1753bef23c2b8/67545b82c5a4314c973256aa )
+2. Select one of the Annual Trip radio button
+3. Select Family radio button
+4. Set No of Adults to 2
+5. Set No of Children to 3
+6. Set Start Date to 12/08/2025
+7. Set End Date to 17/08/2025
+8. Provide Area as Pune
+9. Click on Get Quote button
+10. Select Plus Card
+11. Click on Next button, it will take you to Complete Application page
+12. In "Complete Application" page provide salution as Mr
+13. Provide name as Sakamoto San
+14. Date of Birth 01/01/1990
+15. Provide Email Address as sakamoto@days.com
+16. Provide Identity type Aadhar Card
+17. Provide Aadhar Number as 123412341234
+18. Provide mobile number as 121212121212
+19. Select Gender as Male
+20. Provide Nationality as South Korean
+21. Provide address as 123
+22. Click on Next, this will take us to Summary Page
+23. Click on Next button in "Summary Page", this will take you to "Payment Amount" page
+24. Validate payment amount for Plus card is displayed
+25. Select card type accepted as Credit Card
+26. Provide Name on card as Nagumo
+27. Provide Card Number as 258014703690
+28. Provide Security Code as 12
+29. Provide Expiration Month as 01
+30. Provide Expiration Year as 28
+31. Provide Zipcode as 1245
+32. Click on Submit button

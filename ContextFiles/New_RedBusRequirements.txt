@@ -1,0 +1,105 @@
+Page #1: Home page
+page title: Bus Ticket Booking Online at Cheapest Price with Top Bus Operators- redBus
+page url: https://www.redbus.in/
+Section #1: Header/ Menu bar consists of following elements:
+- “redbus” logo, clicking on which the user should be taken to the home page “https://www.redbus.in/” with the page title: “Bus Ticket Booking Online at Cheapest Price with Top Bus Operators- redBus”
+- “Bus tickets” tab that takes user back to homepage “https://www.redbus.in/” with the page title: “Bus Ticket Booking Online at Cheapest Price with Top Bus Operators- redBus”
+- “Train  tickets tab” that takes user to the url: “https://www.redbus.in/railways” with page title: "Train Ticket Booking, Book IRCTC Train Tickets Online”
+- “Bookings” button that takes user to the url https://www.redbus.in/railways/user/trips with page title: “Online Bus tickets Booking, AC Volvo Booking, 250 INR CB On Bus Reservation”
+- “Help” button, that takes user to the url “https://www.redbus.in/info/redcare” with page title “red:Care” 
+- “Account” button, clicking on which will open a side menu bar
+
+Section #2: “Search Widget” 
+Search Widget Element#1- Search field with placeholder text “From” in it
+Functionality:
+- clicking on from field the user is given option to type in/provide their search input
+- providing their search option the user will be provided with search results in form of a dropdown
+- User then has to select any of the search results, if any of the search results are not selected then the From field is left empty
+
+Search Widget Element#2- Search field with placeholder text “To” in it
+Functionality:
+- clicking on To field the user is given option to type in/provide their search input
+- providing their search option the user will be provided with search results in form of a dropdown
+- User then has to select any of the search results, if any of the search results are not selected then the To field is left empty
+Search Widget Element#3- Date Input wrapper with three elements:
+Element #3.1- Date of Journey field, with placeholder text “Date of Journey” and today’s date just below it in the display format of “dd mon, yyyy”
+Functionality:
+- Clicking on the Date of Journey field will open a calendar/ date picker
+- the date picker has one left arrow, month and year field, right arrow at the top
+- just below them are the dates of the respective month which the user selects to choose with help of arrows
+- the user is prohibited to select a date from past, if the user is at current month then left arrow is disabled, and the dates from past are non clickable.
+- user has to navigate to the respective months and year using the left and right arrows
+- on landing on required month and year, like for example “January 2026” the user then has to select a date by clicking on the displayed dates of respective month
+Element #3.2- Today button
+Functionality:
+- Clicking on Today button without providing either From or To will display a message at bottom with text “Please enter source and destination”
+- Clicking on Today button with both From and To provided will take user to Results page with title containing the text “<From Value> to <To Value> Bus Online Tickets”
+
+Element #3.3- Tomorrow button
+Functionality:
+- Clicking on Today button without providing either From or To will display a message at bottom with text “Please enter source and destination”
+- Clicking on Today button with both From and To provided will take user to Results page with title containing the text “<From Value> to <To Value> Bus Online Tickets”
+
+Search Widget Element #4- Search busses button
+Functionality:
+- Clicking on Today button without providing either From or To will display a message at bottom with text “Please enter source and destination”
+- Clicking on Today button with both From and To provided will take user to Results page with title containing the text “<From Value> to <To Value> Bus Online Tickets”
+
+Page #2: Results page
+page title: <From value> to <To value> Bus Online Tickets Booking
+Section #1: modifySearch section
+
+modify Search section Element #1- “From field” with value from the From field provided in home page
+Description: It has title text “From”, just below it “From <Value>” should be displayed that was provided from “From” field of home page
+Functionality:
+- clicking on from field the user is given option to type in/provide their search input
+- providing their search option the user will be provided with search results in form of a dropdown
+- User then has to select any of the search results, if any of the search results are not selected then the From<Value> from the home page is to be displayed
+
+modify Search section Element #2- “To field” with value from the To field provided in home page
+Description: It has title text “To”, just below it “From <Value>” should be displayed that was provided from “From” field of home page
+Functionality:
+- clicking on to field the user is given option to type in/provide their search input
+- providing their search option the user will be provided with search results in form of a dropdown
+- User then has to select any of the search results, if any of the search results are not selected then the To<Value> from the home page is to be displayed
+modify Search section Element #3- Date wrapper with three elements
+Element #3.1- Date of Journey field, with placeholder text “Date of Journey” and today’s date option selected from home page just below the placeholder text in the display format of “dd mon, yyyy”
+Functionality:
+- The Date being displayed below the placeholder text should be as follows:
+a. If Today button was clicked in Home page, then it should display today’s date
+b. If Tomorrow button was clicked in Home page, then it should display tomorrow’s date
+c. If Search busses button was clicked, then the date provided as input in the home page should be displayed in results page as well
+- Clicking on the Date of Journey field will open a calendar/ date picker
+- the date picker has one left arrow, month and year field, right arrow at the top
+- just below them are the dates of the respective month which the user selects to choose with help of arrows
+- the user is prohibited to select a date from past, if the user is at current month then left arrow is disabled, and the dates from past are non clickable.
+- user has to navigate to the respective months and year using the left and right arrows
+- on landing on required month and year, like for example “January 2026” the user then has to select a date by clicking on the displayed dates of respective month
+Element #3.2- Today button
+Functionality:
+- Clicking on Today button without providing either From or To will display a message at bottom with text “Please enter source and destination”
+- Clicking on Today button with both From and To provided will take user to Results page with title containing the text “<From Value> to <To Value> Bus Online Tickets”
+
+Element #3.3- Tomorrow button
+Functionality:
+- Clicking on Today button without providing either From or To will display a message at bottom with text “Please enter source and destination”
+- Clicking on Today button with both From and To provided will take user to Results page with title containing the text “<From Value> to <To Value> Bus Online Tickets”
+modify Search section Element #4- Search button, a button with a magnify/search icon in it
+Functionality:
+- If there was a change Date of journey, then clicking on search button should refresh the page, display Date of Journey as the new date.
+
+Section #1: Filter buses section
+
+Filter buses section Element #1 – Primo bus button
+Filter buses section Element #2 – AC button
+Filter buses section Element #3 – SLEEPER button
+Filter buses section Element #4 – Single Seats button
+Filter buses section Element #5 – SEATER button
+Filter buses section Element #6 – High Rated Buses button
+Filter buses section Element #7 – Live Tracking
+Filter buses section Element #8 – Volvo Buses
+
+Functionality for all the buttons:
+- Selecting the button will refresh the page and the color of the button will be changed
+- The color of the button will be “#D63941” if selected
+- The color of the button will be “#FFFFFF” if unselected
