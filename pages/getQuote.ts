@@ -198,17 +198,18 @@ export class GetQuotePage {
   async selectDates(startDate: string, endDate: string) {
     await this.startDateInput.fill(startDate);
     // Wait for 2 seconds after entering dates
-    await this.page.waitForTimeout(1000);
+    await this.page.waitForTimeout(500);
     // Close the calendar popup if open by pressing Escape
     await this.page.keyboard.press('Escape');  
-    await this.page.waitForTimeout(1000);  
+    await this.page.waitForTimeout(500);  
     await this.endDateInput.fill(endDate);
     // Wait for 2 seconds after entering dates
-    await this.page.waitForTimeout(1000);
+    await this.page.waitForTimeout(500);
     // Close the calendar popup if open by pressing Escape
     await this.page.keyboard.press('Escape');
   }
 
+  
   // 6. Click Get Quote button
   async clickGetQuote() {
     await this.getQuoteButton.click();
